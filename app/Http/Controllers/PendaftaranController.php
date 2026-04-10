@@ -24,8 +24,9 @@ class PendaftaranController extends Controller
                 
                 $pendaftarTerbaru = Pendaftaran::with('user', 'ekskul')
                     ->whereIn('ekskul_id', $ekskulIds)
+                    ->orderBy('ekskul_id')
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
                     
                 $totalPendaftar = Pendaftaran::whereIn('ekskul_id', $ekskulIds)->where('status', 'menunggu')->count();
                 
@@ -41,8 +42,9 @@ class PendaftaranController extends Controller
                 $ekskul = Ekstrakurikuler::first(); // fallback default untuk admin
                 
                 $pendaftarTerbaru = Pendaftaran::with('user', 'ekskul')
+                    ->orderBy('ekskul_id')
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
                     
                 $totalPendaftar = Pendaftaran::where('status', 'menunggu')->count();
                 
@@ -60,7 +62,17 @@ class PendaftaranController extends Controller
 
         // IF SISWA
         $ekskulList = Ekstrakurikuler::all();
-        return view('pendaftaran-ekskul-siswa', compact('ekskulList'));
+        $ekskulSelected = null;
+        
+        // Jika datang dari link ekskul tertentu, filter hanya ekskul itu
+        if (request('ekskul_id')) {
+            $ekskulSelected = Ekstrakurikuler::find(request('ekskul_id'));
+            if ($ekskulSelected) {
+                $ekskulList = collect([$ekskulSelected]);
+            }
+        }
+        
+        return view('pendaftaran-ekskul-siswa', compact('ekskulList', 'ekskulSelected'));
     }
 
     public function store(Request $request)

@@ -44,8 +44,13 @@ class AbsensiController extends Controller
                 });
             }
 
-            $absensiList = $query->get();
-            return view('absensi-admin', compact('absensiList', 'ekskul', 'tanggal', 'status', 'nama'));
+            // Sort by ekskul_id, then by user name
+            $query->orderBy('ekskul_id')->orderBy('user_id');
+            
+            // Pagination: 10 items per page
+            $absensiList = $query->paginate(10);
+            
+            return view('absensi-admin', compact('absensiList', 'tanggal', 'status', 'nama'));
         }
         
         return view('absensi-ekskul-siswa');
@@ -83,7 +88,41 @@ class AbsensiController extends Controller
             ->select('ekstrakurikuler.*')
             ->get();
 
-        return view('absensi-ekskul-siswa', compact('ekskulDikuti'));
+        // Ambil data jadwal untuk setiap ekskul
+        $jadwalMap = [];
+        foreach ($ekskulDikuti as $ekskul) {
+            $jadwalMap[$ekskul->id] = DB::table('jadwal_ekskul')
+                ->where('ekskul_id', $ekskul->id)
+                ->get();
+        }
+
+        // Hari hari ini dalam format lowercase Indonesia
+        $hariIniMapping = [
+            'Monday' => 'senin',
+            'Tuesday' => 'selasa',
+            'Wednesday' => 'rabu',
+            'Thursday' => 'kamis',
+            'Friday' => 'jumat',
+            'Saturday' => 'sabtu',
+            'Sunday' => 'minggu',
+        ];
+        $hariIni = now()->format('l');
+        $hariIniLower = $hariIniMapping[$hariIni];
+        
+        // Nama hari Indonesia untuk tampilan
+        $hariIniIndonesia = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ][$hariIni];
+        
+        $tanggalHariIni = now()->format('d F Y');
+
+        return view('absensi-ekskul-siswa', compact('ekskulDikuti', 'jadwalMap', 'hariIniIndonesia', 'tanggalHariIni', 'hariIniLower'));
     }
 
     public function storeSiswa(Request $request)

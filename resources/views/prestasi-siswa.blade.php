@@ -87,7 +87,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 235px;
+            width: 165px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -102,7 +102,7 @@
         }
 
         .sidebar-title {
-            font-size: 14.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #1a1a1a;
             text-align: center;

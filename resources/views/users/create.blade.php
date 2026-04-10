@@ -380,6 +380,10 @@
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Pengguna
                 </a>
+                <a class="nav-item" href="{{ route('ekstrakurikuler.index') }}">
+                    <span class="nav-icon"><i class="fas fa-book"></i></span>
+                    Daftar Ekskul
+                </a>
                 <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
                     Pendaftar

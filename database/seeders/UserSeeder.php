@@ -34,16 +34,15 @@ class UserSeeder extends Seeder
 
         // list Pembina
         $pembina = [
-            ['name' => 'Hendra Wijaya', 'email' => 'hendra@example.com'],
-            ['name' => 'Siti Rahma', 'email' => 'siti@example.com'],
-            ['name' => 'Agus Kurniawan', 'email' => 'agus@example.com'],
-            ['name' => 'Lutfi Hakim', 'email' => 'lutfi@example.com'],
-            ['name' => 'Dewi Lestari', 'email' => 'dewi@example.com'],
-            ['name' => 'Ripan Fauzi', 'email' => 'ripan@example.com'],
-            ['name' => 'Maya Indah', 'email' => 'maya@example.com'],
-            ['name' => 'Doni Setiawan', 'email' => 'doni@example.com'],
-            ['name' => 'Ratna Sari', 'email' => 'ratna@example.com'],
-            ['name' => 'Andi Pratama', 'email' => 'andi@example.com'],
+            ['name' => 'Hendra Wijaya', 'email' => 'hendra.basket@example.com', 'ekskul' => 'Basket'],
+            ['name' => 'Siti Rahma', 'email' => 'siti.voli@example.com', 'ekskul' => 'Voli'],
+            ['name' => 'Agus Kurniawan', 'email' => 'agus.handball@example.com', 'ekskul' => 'Handball'],
+            ['name' => 'Lutfi Hakim', 'email' => 'lutfi.karate@example.com', 'ekskul' => 'Karate'],
+            ['name' => 'Dewi Lestari', 'email' => 'dewi.psilat@example.com', 'ekskul' => 'Pencak Silat'],
+            ['name' => 'Ripan Fauzi', 'email' => 'ripan.rohani@example.com', 'ekskul' => 'Rohani Islam'],
+            ['name' => 'Maya Indah', 'email' => 'maya.paskibra@example.com', 'ekskul' => 'Paskibra'],
+            ['name' => 'Doni Setiawan', 'email' => 'doni.pmr@example.com', 'ekskul' => 'PMR'],
+            ['name' => 'Ratna Sari', 'email' => 'ratna.bahasa@example.com', 'ekskul' => 'Bahasa Inggris'],
         ];
 
         foreach ($pembina as $p) {
@@ -51,7 +50,7 @@ class UserSeeder extends Seeder
                 'name' => $p['name'],
                 'email' => $p['email'],
                 'password' => Hash::make('password'),
-                'role' => 'admin',
+                'role' => 'pembina',
             ]);
         }
 

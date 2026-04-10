@@ -209,19 +209,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="kelas">Kelas</label>
-                    <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}" required placeholder="Kelas">
-                    @error('kelas')<span style="color:#c00;font-size:11px;margin-top:4px;display:block">{{ $message }}</span>@enderror
+                    <label for="kelas_jurusan">Kelas</label>
+                    <input type="text" id="kelas_jurusan" name="kelas_jurusan" value="{{ old('kelas_jurusan') }}" required placeholder="Contoh: XI PPLG 1">
+                    <small style="color:#666;font-size:10px;margin-top:2px;display:block">Opsional: Tambahkan &amp; dan jurusan, misalnya: XI PPLG 1&Rekayasa Perangkat Lunak</small>
+                    @error('kelas_jurusan')<span style="color:#c00;font-size:11px;margin-top:4px;display:block">{{ $message }}</span>@enderror
                 </div>
             </div>
 
             <div class="row-grid">
-                <div class="form-group">
-                    <label for="jurusan">Jurusan</label>
-                    <input type="text" id="jurusan" name="jurusan" value="{{ old('jurusan') }}" required placeholder="Jurusan">
-                    @error('jurusan')<span style="color:#c00;font-size:11px;margin-top:4px;display:block">{{ $message }}</span>@enderror
-                </div>
-
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
                     <input type="text" id="alamat" name="alamat" value="{{ old('alamat') }}" required placeholder="Alamat">

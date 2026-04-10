@@ -392,6 +392,119 @@
         .empty-state p {
             font-size: 14px;
         }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination span,
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            padding: 0 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            color: #555;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .pagination a:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .pagination .active span {
+            background: #3a7bd5;
+            color: #fff;
+            border-color: #3a7bd5;
+        }
+
+        .pagination .disabled span {
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #eee;
+            background: #fafafa;
+        }
+
+        .pagination .page-item span.relative {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Override Tailwind default pagination */
+        .pagination svg {
+            display: none;
+        }
+
+        .pagination .relative.inline-flex {
+            gap: 0;
+        }
+
+        /* Pagination item styling */
+        .pagination .page-item {
+            display: inline-flex;
+        }
+
+        .pagination .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+
+        .pagination .page-link:hover:not(.disabled) {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #3a7bd5;
+            color: #fff;
+            border-color: #3a7bd5;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #eee;
+            background: #fafafa;
+        }
+
+        /* Pagination info text */
+        .pagination-info {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        }
     </style>
 </head>
 
@@ -423,6 +536,10 @@
                 <a class="nav-item active" href="{{ route('users.index') }}">
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Pengguna
+                </a>
+                <a class="nav-item" href="{{ route('ekstrakurikuler.index') }}">
+                    <span class="nav-icon"><i class="fas fa-book"></i></span>
+                    Daftar Ekskul
                 </a>
                 <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
@@ -534,8 +651,13 @@
             </div>
 
             @if ($users->hasPages())
-                <div style="margin-top: 20px; text-align: center;">
-                    {{ $users->links() }}
+                <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center;">
+                    <div class="pagination-info">
+                        Showing {{ ($users->currentPage() - 1) * $users->perPage() + 1 }} to {{ min($users->currentPage() * $users->perPage(), $users->total()) }} of {{ $users->total() }} results
+                    </div>
+                    <div class="pagination" style="margin-top: 10px;">
+                        {{ $users->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             @endif
         </main>

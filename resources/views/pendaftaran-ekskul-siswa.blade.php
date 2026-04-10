@@ -85,7 +85,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 235px;
+            width: 165px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -100,7 +100,7 @@
         }
 
         .sidebar-title {
-            font-size: 14.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #1a1a1a;
             text-align: center;
@@ -530,12 +530,17 @@
                         <div class="section-title">Pilihan Ekskul</div>
                         <div class="ekskul-info-item" style="border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px;">
                             <span class="info-icon">🎯</span>
-                            <select name="ekskul_id" style="border: none; outline: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; color: #333;" required>
-                                <option value="" disabled selected>Pilih Ekstrakurikuler</option>
+                            <select name="ekskul_id" style="border: none; outline: none; background: transparent; width: 100%; font-size: 16px; font-weight: 600; color: #333;" required {{ $ekskulSelected ? 'disabled' : '' }}>
+                                @if(!$ekskulSelected)
+                                    <option value="" disabled selected>Pilih Ekstrakurikuler</option>
+                                @endif
                                 @foreach($ekskulList as $ekskul)
                                     <option value="{{ $ekskul->id }}" {{ request('ekskul_id') == $ekskul->id ? 'selected' : '' }}>{{ $ekskul->nama }}</option>
                                 @endforeach
                             </select>
+                            @if($ekskulSelected)
+                                <input type="hidden" name="ekskul_id" value="{{ $ekskulSelected->id }}">
+                            @endif
                         </div>
                     </div>
                     <div>

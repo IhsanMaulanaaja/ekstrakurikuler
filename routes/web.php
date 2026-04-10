@@ -29,6 +29,8 @@ Route::resource('/users', UsersController::class)->middleware(['auth', 'verified
 // PILIHAN EKSKUL
 use App\Http\Controllers\EkskulController;
 Route::get('/pilihan-ekskul', [EkskulController::class, 'pilihanEkskul'])->middleware(['auth', 'verified'])->name('pilihan-ekskul');
+Route::resource('/ekstrakurikuler', EkskulController::class)->middleware(['auth', 'verified']);
+
 
 // PENDAFTARAN EKSKUL
 use App\Http\Controllers\PendaftaranController;

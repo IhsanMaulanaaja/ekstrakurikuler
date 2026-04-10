@@ -34,10 +34,16 @@ class StudentRegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'nomor_telepon' => ['required', 'string', 'max:20'],
-            'kelas' => ['required', 'string', 'max:50'],
+            'kelas_jurusan' => ['required', 'string', 'max:150'],
             'alamat' => ['required', 'string'],
-            'jurusan' => ['required', 'string', 'max:100'],
         ]);
+
+        $kelas = $request->kelas_jurusan;
+        $jurusan = null;
+
+        if (str_contains($request->kelas_jurusan, '&')) {
+            [$kelas, $jurusan] = array_map('trim', explode('&', $request->kelas_jurusan, 2));
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -45,9 +51,9 @@ class StudentRegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'siswa',
             'nomor_telepon' => $request->nomor_telepon,
-            'kelas' => $request->kelas,
+            'kelas' => $kelas,
             'alamat' => $request->alamat,
-            'jurusan' => $request->jurusan,
+            'jurusan' => $jurusan,
         ]);
 
         event(new Registered($user));

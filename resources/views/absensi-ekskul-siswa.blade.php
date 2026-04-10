@@ -62,7 +62,7 @@
         }
 
         .user-btn {
-            background: #5b8deb;
+            background: #3a7bd5;
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -84,7 +84,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 235px;
+            width: 165px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -99,7 +99,7 @@
         }
 
         .sidebar-title {
-            font-size: 14.5px;
+            font-size: 13px;
             font-weight: 800;
             color: #1a1a1a;
             text-align: center;
@@ -125,10 +125,10 @@
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 16px;
+            gap: 10px;
+            padding: 10px 12px;
             border-radius: 10px;
-            font-size: 15.5px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
@@ -418,6 +418,18 @@
             cursor: pointer;
         }
 
+        .jadwal-select-row input[type="text"] {
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            outline: none;
+            width: 100%;
+            cursor: default;
+        }
+
         .jadwal-select-row .chevron {
             font-size: 13px;
             color: #888;
@@ -642,26 +654,9 @@
                                 terdaftar di ekskul mana pun.</p>
                         @endif
                     <div class="jadwal-rows">
-                        <div class="jadwal-select-row">
+                        <div class="jadwal-select-row" style="pointer-events: none; opacity: 0.7;">
                             <i class="fas fa-calendar-alt jadwal-icon"></i>
-                            <select>
-                                <option>Senin</option>
-                                <option>Selasa</option>
-                                <option>Rabu</option>
-                                <option>Kamis</option>
-                                <option>Jumat</option>
-                                <option>Sabtu</option>
-                            </select>
-                            <i class="fas fa-chevron-down chevron"></i>
-                        </div>
-                        <div class="jadwal-select-row">
-                            <i class="fas fa-clock jadwal-icon clock"></i>
-                            <select>
-                                <option>15:00 - 17:00</option>
-                                <option>16:00 - 18:00</option>
-                                <option>07:00 - 09:00</option>
-                            </select>
-                            <i class="fas fa-chevron-down chevron"></i>
+                            <input type="text" value="{{ $hariIniIndonesia }}, {{ $tanggalHariIni }}" readonly style="border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 14px; color: #555; outline: none; width: 100%; cursor: default;">
                         </div>
                     </div>
                 </div>
@@ -683,7 +678,11 @@
     </div>
 
     <script>
-        // Form submitted via POST
+        // Data jadwal dalam format JSON
+        const jadwalMap = @json($jadwalMap ?? []);
+        const hariIniLower = "{{ $hariIniLower }}";
+
+
     </script>
 
 </body>

@@ -15,18 +15,18 @@ class EkstrakulikulerSeeder extends Seeder
     {
         // Admin (id 1)
         // Siswa (id 2)
-        // Pembina (id 3 - 12)
+        // Pembina (id 3 - 11)
 
         $ekskuls = [
-            ['nama' => 'Pramuka', 'deskripsi' => 'Ekstrakurikuler Wajib kepanduan', 'pembina_id' => 3, 'foto' => 'assets/pramuka.png'],
-            ['nama' => 'Futsal', 'deskripsi' => 'Ekskul Olahraga Sepak Bola dalam ruangan', 'pembina_id' => 4, 'foto' => 'assets/futsal.png'],
-            ['nama' => 'Basket', 'deskripsi' => 'Ekskul Olahraga Bola Basket', 'pembina_id' => 5, 'foto' => 'assets/basket.png'],
-            ['nama' => 'PMR', 'deskripsi' => 'Ekskul Palang Merah Remaja', 'pembina_id' => 6, 'foto' => 'assets/pmr.png'],
-            ['nama' => 'Voli', 'deskripsi' => 'Ekskul Olahraga Bola Voli', 'pembina_id' => 7, 'foto' => 'assets/voli.png'],
-            ['nama' => 'Paskibra', 'deskripsi' => 'Ekskul Pasukan Pengibar Bendera', 'pembina_id' => 8, 'foto' => 'assets/paskibra.png'],
-            ['nama' => 'Rohis', 'deskripsi' => 'Ekskul Kerohanian Islam', 'pembina_id' => 9, 'foto' => 'assets/rohis.png'],
-            ['nama' => 'Seni Musik', 'deskripsi' => 'Ekskul Paduan Suara & Alat Musik', 'pembina_id' => 11, 'foto' => 'assets/seni_musik.png'],
-            ['nama' => 'Taekwondo', 'deskripsi' => 'Ekskul Olahraga Bela Diri', 'pembina_id' => 12, 'foto' => 'assets/taekwondo.png'],
+            ['nama' => 'Basket', 'deskripsi' => 'Ekskul Olahraga Bola Basket', 'pembina_id' => 3, 'foto' => 'assets/basket.png'],
+            ['nama' => 'Voli', 'deskripsi' => 'Ekskul Olahraga Bola Voli', 'pembina_id' => 4, 'foto' => 'assets/voli.png'],
+            ['nama' => 'Handball', 'deskripsi' => 'Ekskul Olahraga Handa Bola', 'pembina_id' => 5, 'foto' => 'assets/handball.png'],
+            ['nama' => 'Karate', 'deskripsi' => 'Ekskul Olahraga Karate', 'pembina_id' => 6, 'foto' => 'assets/karate.png'],
+            ['nama' => 'Pencak Silat', 'deskripsi' => 'Ekskul Olahraga Bela Diri Pencak Silat', 'pembina_id' => 7, 'foto' => 'assets/pencak_silat.png'],
+            ['nama' => 'Rohani Islam', 'deskripsi' => 'Ekskul Kerohanian Islam', 'pembina_id' => 8, 'foto' => 'assets/rohani_islam.png'],
+            ['nama' => 'Paskibra', 'deskripsi' => 'Ekskul Pasukan Pengibar Bendera', 'pembina_id' => 9, 'foto' => 'assets/paskibra.png'],
+            ['nama' => 'PMR', 'deskripsi' => 'Ekskul Palang Merah Remaja', 'pembina_id' => 10, 'foto' => 'assets/pmr.png'],
+            ['nama' => 'Bahasa Inggris', 'deskripsi' => 'Ekskul Pengembangan Bahasa Inggris', 'pembina_id' => 11, 'foto' => 'assets/bahasa_inggris.png'],
         ];
 
         foreach ($ekskuls as $e) {

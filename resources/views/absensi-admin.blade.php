@@ -87,8 +87,8 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 190px;
-            background: #90b4d4;
+            width: 165px;
+            background: #a8c4d8;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -130,9 +130,9 @@
             align-items: center;
             gap: 10px;
             padding: 10px 12px;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
@@ -144,8 +144,8 @@
         }
 
         .nav-item.active {
-            background: #5b8deb;
-            color: #fff;
+            background: #ffffff;
+            color: #1a1a1a;
             font-weight: 700;
         }
 
@@ -154,7 +154,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 15px;
             flex-shrink: 0;
         }
 
@@ -165,7 +165,7 @@
 
         .logout-btn {
             width: 100%;
-            background: #d9534f;
+            background: #e63946;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -182,7 +182,7 @@
         }
 
         .logout-btn:hover {
-            background: #c9302c;
+            background: #c1121f;
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -341,6 +341,90 @@
             background: #2563eb;
         }
 
+        /* ===== PAGINATION ===== */
+        .pagination-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .pagination-info {
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .pagination-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-links a,
+        .pagination-links span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.15s;
+        }
+
+        .pagination-links a:hover {
+            background: #f1f5f9;
+            border-color: #5b8deb;
+            color: #5b8deb;
+        }
+
+        .pagination-links span.active {
+            background: #5b8deb;
+            color: #fff;
+            border-color: #5b8deb;
+        }
+
+        .pagination-links span.disabled {
+            color: #ccc;
+            border-color: #eee;
+            cursor: not-allowed;
+        }
+
+        .ekskul-section {
+            margin-bottom: 32px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .ekskul-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ekskul-badge {
+            display: inline-block;
+            background: #5b8deb;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
         /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed;
@@ -454,6 +538,14 @@
                     <span class="nav-icon"><i class="fas fa-home"></i></span>
                     Beranda
                 </a>
+                <a class="nav-item" href="{{ route('users.index') }}">
+                    <span class="nav-icon"><i class="fas fa-users"></i></span>
+                    Kelola Pengguna
+                </a>
+                <a class="nav-item" href="{{ route('ekstrakurikuler.index') }}">
+                    <span class="nav-icon"><i class="fas fa-book"></i></span>
+                    Daftar Ekskul
+                </a>
                 <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
                     Pendaftar
@@ -481,14 +573,11 @@
 
             <div class="card-container">
                 <div class="dash-header">
-                    <h1>Absensi Murid - Ekskul {{ isset($ekskul) ? $ekskul->nama : ($absensiList->first()?->ekskul?->nama ?? 'Semua') }}</h1>
+                    <h1>Absensi Murid - Per Ekstrakurikuler</h1>
                     <div class="recap-info">
                         @php \Carbon\Carbon::setLocale('id'); @endphp
-                        <span>{{ \Carbon\Carbon::parse($absensiList->first()?->tanggal ?? now())->translatedFormat('l, d F Y') }}</span>
-                        <span>Hadir :{{ $absensiList->where('status', 'hadir')->count() }}</span>
-                        <span>Izin :{{ $absensiList->where('status', 'izin')->count() }}</span>
-                        <span>Sakit :{{ $absensiList->where('status', 'sakit')->count() }}</span>
-                        <span>Alpha :{{ $absensiList->where('status', 'alfa')->count() }}</span>
+                        <span>{{ \Carbon\Carbon::parse($tanggal ?? now())->translatedFormat('l, d F Y') }}</span>
+                        <span>Total Data: {{ $absensiList->total() }}</span>
                     </div>
                 </div>
 
@@ -506,48 +595,91 @@
                     <a href="{{ route('absensi-admin') }}" class="btn-cancel" style="padding: 6px 16px; text-decoration: none; display: inline-block;">Reset</a>
                 </form>
 
-                <table class="absensi-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Siswa</th>
-                            <th>Kelas</th>
-                            <th>Eskul</th>
-                            <th>Status</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($absensiList as $index => $absensi)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $absensi->user->name ?? '-' }}</td>
-                                <td>{{ $absensi->user->kelas ?? '-' }}</td>
-                                <td>{{ $absensi->ekskul->nama ?? '-' }}</td>
-                                <td>
-                                    @if ($absensi->status === 'hadir')
-                                        <span class="badge hadir">Hadir</span>
-                                    @elseif ($absensi->status === 'izin')
-                                        <span class="badge izin">Izin</span>
-                                    @elseif ($absensi->status === 'sakit')
-                                        <span class="badge sakit">Sakit</span>
-                                    @else
-                                        <span class="badge alpha">Alpha</span>
-                                    @endif
-                                </td>
-                                <td>{{ $absensi->keterangan ?? '-' }}</td>
-                                <td><button type="button" class="btn-edit"
-                                        onclick="openModal('{{ $absensi->id }}', '{{ $absensi->status }}', '{{ addslashes($absensi->keterangan) }}')">Edit</button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" style="text-align: center;">Belum ada data absensi</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                @php
+                    // Group absensi by ekstrakurikuler
+                    $groupedByEkskul = $absensiList->groupBy('ekskul_id');
+                @endphp
+
+                @forelse($groupedByEkskul as $ekskulId => $absensiByEkskul)
+                    <div class="ekskul-section">
+                        <div class="ekskul-title">
+                            <span class="ekskul-badge">{{ $absensiByEkskul->first()->ekskul->nama ?? 'N/A' }}</span>
+                            <span style="color: #888; font-size: 14px;">({{ $absensiByEkskul->count() }} siswa)</span>
+                        </div>
+                        
+                        <table class="absensi-table" style="margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Siswa</th>
+                                    <th>Kelas</th>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($absensiByEkskul as $index => $absensi)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $absensi->user->name ?? '-' }}</td>
+                                        <td>{{ $absensi->user->kelas ?? '-' }}</td>
+                                        <td>
+                                            @if ($absensi->status === 'hadir')
+                                                <span class="badge hadir">Hadir</span>
+                                            @elseif ($absensi->status === 'izin')
+                                                <span class="badge izin">Izin</span>
+                                            @elseif ($absensi->status === 'sakit')
+                                                <span class="badge sakit">Sakit</span>
+                                            @else
+                                                <span class="badge alpha">Alpha</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $absensi->keterangan ?? '-' }}</td>
+                                        <td><button type="button" class="btn-edit"
+                                                onclick="openModal('{{ $absensi->id }}', '{{ $absensi->status }}', '{{ addslashes($absensi->keterangan) }}')">Edit</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @empty
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <p style="font-size: 16px; font-weight: 600;">Belum ada data absensi</p>
+                    </div>
+                @endforelse
+
+                <!-- Pagination -->
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        Showing {{ $absensiList->firstItem() ?? 0 }} to {{ $absensiList->lastItem() ?? 0 }} of {{ $absensiList->total() }} results
+                    </div>
+                    <div class="pagination-links">
+                        {{-- Previous Page Link --}}
+                        @if ($absensiList->onFirstPage())
+                            <span class="disabled">‹</span>
+                        @else
+                            <a href="{{ $absensiList->previousPageUrl() }}">‹</a>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($absensiList->getUrlRange(1, $absensiList->lastPage()) as $page => $url)
+                            @if ($page == $absensiList->currentPage())
+                                <span class="active">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($absensiList->hasMorePages())
+                            <a href="{{ $absensiList->nextPageUrl() }}">›</a>
+                        @else
+                            <span class="disabled">›</span>
+                        @endif
+                    </div>
+                </div>
             </div>
 
         </main>

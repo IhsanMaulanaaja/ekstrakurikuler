@@ -87,8 +87,8 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 190px;
-            background: #90b4d4;
+            width: 165px;
+            background: #a8c4d8;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -130,9 +130,9 @@
             align-items: center;
             gap: 10px;
             padding: 10px 12px;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
@@ -144,8 +144,8 @@
         }
 
         .nav-item.active {
-            background: #5b8deb;
-            color: #fff;
+            background: #ffffff;
+            color: #1a1a1a;
             font-weight: 700;
         }
 
@@ -154,7 +154,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 15px;
             flex-shrink: 0;
         }
 
@@ -165,7 +165,7 @@
 
         .logout-btn {
             width: 100%;
-            background: #d9534f;
+            background: #e63946;
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -182,7 +182,7 @@
         }
 
         .logout-btn:hover {
-            background: #c9302c;
+            background: #c1121f;
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -486,6 +486,14 @@
                 <a class="nav-item" href="{{ route('dashboard-admin') }}">
                     <span class="nav-icon"><i class="fas fa-home"></i></span>
                     Beranda
+                </a>
+                <a class="nav-item" href="{{ route('users.index') }}">
+                    <span class="nav-icon"><i class="fas fa-users"></i></span>
+                    Kelola Pengguna
+                </a>
+                <a class="nav-item" href="{{ route('ekstrakurikuler.index') }}">
+                    <span class="nav-icon"><i class="fas fa-book"></i></span>
+                    Daftar Ekskul
                 </a>
                 <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>

@@ -75,10 +75,10 @@
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
-            border-radius: 4px;
-            font-size: 18px;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
@@ -90,16 +90,18 @@
         }
 
         .nav-item.active {
-            background: #5b8deb;
-            color: #fff;
+            background: #ffffff;
+            color: #1a1a1a;
             font-weight: 800;
         }
 
-        .nav-icon {
-            font-size: 22px;
-            width: 28px;
+        .nav-item .nav-icon {
+            width: 22px;
             display: flex;
+            align-items: center;
             justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
         }
 
         .logout-container {
@@ -332,6 +334,91 @@
             background: #ef4444;
         }
 
+        /* ===== EKSKUL SECTION ===== */
+        .ekskul-section {
+            margin-bottom: 24px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .ekskul-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ekskul-badge {
+            display: inline-block;
+            background: #5b8deb;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .pagination-info {
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .pagination-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-links a,
+        .pagination-links span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.15s;
+        }
+
+        .pagination-links a:hover {
+            background: #f1f5f9;
+            border-color: #5b8deb;
+            color: #5b8deb;
+        }
+
+        .pagination-links span.active {
+            background: #5b8deb;
+            color: #fff;
+            border-color: #5b8deb;
+        }
+
+        .pagination-links span.disabled {
+            color: #ccc;
+            border-color: #eee;
+            cursor: not-allowed;
+        }
+
         /* Right Column (Jadwal & Pembina) */
         .right-col {
             display: flex;
@@ -416,9 +503,17 @@
         <div class="sidebar-divider"></div>
 
         <nav class="sidebar-nav">
-            <a class="nav-item" href="{{ route('dashboard') }}">
+            <a class="nav-item" href="{{ route('dashboard-admin') }}">
                 <span class="nav-icon"><i class="fas fa-home"></i></span>
                 Beranda
+            </a>
+            <a class="nav-item" href="{{ route('users.index') }}">
+                <span class="nav-icon"><i class="fas fa-users"></i></span>
+                Kelola Pengguna
+            </a>
+            <a class="nav-item" href="{{ route('ekstrakurikuler.index') }}">
+                <span class="nav-icon"><i class="fas fa-book"></i></span>
+                Daftar Ekskul
             </a>
             <a class="nav-item active" href="{{ route('pendaftaran-ekskul') }}">
                 <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
@@ -430,7 +525,7 @@
             </a>
             <a class="nav-item" href="{{ route('prestasi-admin') }}">
                 <span class="nav-icon"><i class="fas fa-medal"></i></span>
-                Kegiatan & <br> Prestasi
+                Kegiatan &amp; Prestasi
             </a>
         </nav>
 
@@ -491,67 +586,112 @@
 
             <!-- Pendaftar Table -->
             <div class="pendaftar-card">
-                <h3>Pendaftar Terbaru</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Kelas</th>
-                            <th>Alasan</th>
-                            <th>Tanggal Daftar</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($pendaftarTerbaru as $pd)
-                            <tr>
-                                <td>
-                                    <div class="user-cell">
-                                        <div class="user-avatar">
-                                            @if ($pd->user->foto)
-                                                <img src="{{ Storage::url($pd->user->foto) }}" alt="Foto">
+                <h3>Pendaftar Terbaru - Per Ekstrakurikuler</h3>
+
+                @php
+                    // Group pendaftar by ekstrakurikuler
+                    $groupedByEkskul = $pendaftarTerbaru->groupBy('ekskul_id');
+                @endphp
+
+                @forelse($groupedByEkskul as $ekskulId => $pendaftarByEkskul)
+                    <div class="ekskul-section">
+                        <div class="ekskul-title">
+                            <span class="ekskul-badge">{{ $pendaftarByEkskul->first()->ekskul->nama ?? 'N/A' }}</span>
+                            <span style="color: #888; font-size: 14px;">({{ $pendaftarByEkskul->count() }} pendaftar)</span>
+                        </div>
+                        
+                        <table style="margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Kelas</th>
+                                    <th>Alasan</th>
+                                    <th>Tanggal Daftar</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pendaftarByEkskul as $pd)
+                                    <tr>
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="user-avatar">
+                                                    @if ($pd->user->foto)
+                                                        <img src="{{ Storage::url($pd->user->foto) }}" alt="Foto">
+                                                    @else
+                                                        <i class="fas fa-user" style="color:#fff; font-size: 18px;"></i>
+                                                    @endif
+                                                </div>
+                                                {{ $pd->user->name }}
+                                            </div>
+                                        </td>
+                                        <td>{{ $pd->user->kelas ?? '-' }}</td>
+                                        <td>{{ $pd->alasan ?? '-' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pd->tanggal_daftar)->translatedFormat('d F Y') }}</td>
+                                        <td>
+                                            @if ($pd->status == 'menunggu')
+                                                <div class="action-btns">
+                                                    <form action="{{ route('pendaftaran.status', $pd->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="disetujui">
+                                                        <button type="submit" class="action-btn btn-check" title="Terima"><i
+                                                                class="fas fa-check"></i></button>
+                                                    </form>
+                                                    <form action="{{ route('pendaftaran.status', $pd->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="ditolak">
+                                                        <button type="submit" class="action-btn btn-cross" title="Tolak"><i
+                                                                class="fas fa-times"></i></button>
+                                                    </form>
+                                                </div>
                                             @else
-                                                <i class="fas fa-user" style="color:#fff; font-size: 18px;"></i>
+                                                <span
+                                                    style="font-size: 12px; font-weight:800; color: {{ $pd->status == 'disetujui' ? '#22c55e' : '#ef4444' }}">{{ ucfirst($pd->status) }}</span>
                                             @endif
-                                        </div>
-                                        {{ $pd->user->name }}
-                                    </div>
-                                </td>
-                                <td>{{ $pd->user->kelas ?? '-' }}</td>
-                                <td>{{ $pd->alasan ?? '-' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($pd->tanggal_daftar)->translatedFormat('d F Y') }}</td>
-                                <td>
-                                    @if ($pd->status == 'menunggu')
-                                        <div class="action-btns">
-                                            <form action="{{ route('pendaftaran.status', $pd->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="status" value="disetujui">
-                                                <button type="submit" class="action-btn btn-check" title="Terima"><i
-                                                        class="fas fa-check"></i></button>
-                                            </form>
-                                            <form action="{{ route('pendaftaran.status', $pd->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="status" value="ditolak">
-                                                <button type="submit" class="action-btn btn-cross" title="Tolak"><i
-                                                        class="fas fa-times"></i></button>
-                                            </form>
-                                        </div>
-                                    @else
-                                        <span
-                                            style="font-size: 12px; font-weight:800; color: {{ $pd->status == 'disetujui' ? '#22c55e' : '#ef4444' }}">{{ ucfirst($pd->status) }}</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: #888;">Belum ada pendaftar terbaru.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @empty
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <p style="font-size: 16px; font-weight: 600;">Belum ada pendaftar</p>
+                    </div>
+                @endforelse
+
+                <!-- Pagination -->
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        Showing {{ $pendaftarTerbaru->firstItem() ?? 0 }} to {{ $pendaftarTerbaru->lastItem() ?? 0 }} of {{ $pendaftarTerbaru->total() }} results
+                    </div>
+                    <div class="pagination-links">
+                        {{-- Previous Page Link --}}
+                        @if ($pendaftarTerbaru->onFirstPage())
+                            <span class="disabled">‹</span>
+                        @else
+                            <a href="{{ $pendaftarTerbaru->previousPageUrl() }}">‹</a>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($pendaftarTerbaru->getUrlRange(1, $pendaftarTerbaru->lastPage()) as $page => $url)
+                            @if ($page == $pendaftarTerbaru->currentPage())
+                                <span class="active">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($pendaftarTerbaru->hasMorePages())
+                            <a href="{{ $pendaftarTerbaru->nextPageUrl() }}">›</a>
+                        @else
+                            <span class="disabled">›</span>
+                        @endif
+                    </div>
+                </div>
             </div>
 
             <!-- Right Column -->

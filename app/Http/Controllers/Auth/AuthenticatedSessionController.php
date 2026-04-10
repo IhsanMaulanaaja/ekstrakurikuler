@@ -14,7 +14,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): RedirectResponse
     {
         // the scaffolded "auth.login" view was removed in favor of separate
         // student/admin login forms. when someone hits the generic "/login"

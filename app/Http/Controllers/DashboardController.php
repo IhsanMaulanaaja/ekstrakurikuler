@@ -28,6 +28,15 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         // 1. Ambil Ekskul Saya (yang sudah join dan status aktif) + Gabungkan jadwalnya untuk tampilan tabel
+        $connection = DB::getDriverName();
+        $jadwalRaw = '';
+
+        if ($connection === 'sqlite') {
+            $jadwalRaw = "GROUP_CONCAT(jadwal_ekskul.hari || ' ' || strftime('%H:%M', jadwal_ekskul.jam_mulai), ', ') as jadwal_lengkap";
+        } else {
+            $jadwalRaw = "GROUP_CONCAT(CONCAT(jadwal_ekskul.hari, ' ', TIME_FORMAT(jadwal_ekskul.jam_mulai, '%H:%i')) SEPARATOR ', ') as jadwal_lengkap";
+        }
+
         $ekskulSiswa = DB::table('anggota_ekskul')
             ->join('ekstrakurikuler', 'anggota_ekskul.ekskul_id', '=', 'ekstrakurikuler.id')
             ->leftJoin('jadwal_ekskul', 'ekstrakurikuler.id', '=', 'jadwal_ekskul.ekskul_id')
@@ -37,7 +46,7 @@ class DashboardController extends Controller
                 'ekstrakurikuler.id',
                 'ekstrakurikuler.nama',
                 'ekstrakurikuler.foto',
-                DB::raw("GROUP_CONCAT(CONCAT(jadwal_ekskul.hari, ' ', TIME_FORMAT(jadwal_ekskul.jam_mulai, '%H:%i')) SEPARATOR ', ') as jadwal_lengkap")
+                DB::raw($jadwalRaw)
             )
             ->groupBy('ekstrakurikuler.id', 'ekstrakurikuler.nama', 'ekstrakurikuler.foto')
             ->get();
