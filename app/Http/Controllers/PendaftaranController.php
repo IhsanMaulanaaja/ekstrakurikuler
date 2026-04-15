@@ -95,12 +95,19 @@ class PendaftaranController extends Controller
             'setuju' => 'accepted'
         ]);
 
-        // Check if already registered
-        $exists = Pendaftaran::where('user_id', $user->id)
+        // Clean up old rejected registrations (allow user to register again after rejection)
+        Pendaftaran::where('user_id', $user->id)
             ->where('ekskul_id', $request->ekskul_id)
+            ->where('status', 'ditolak')
+            ->delete();
+
+        // Check if currently registered (pending or approved)
+        $activeRegistration = Pendaftaran::where('user_id', $user->id)
+            ->where('ekskul_id', $request->ekskul_id)
+            ->whereIn('status', ['menunggu', 'disetujui'])
             ->first();
             
-        if ($exists) {
+        if ($activeRegistration) {
             return back()->with('error', 'Anda sudah mendaftar ekskul ini.');
         }
 

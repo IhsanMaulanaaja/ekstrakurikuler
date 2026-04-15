@@ -344,26 +344,26 @@ h1 {
   </div>
 
   <h1><i class="fas fa-graduation-cap"></i> SMKN 1 Ciomas</h1>
-  <p class="subtitle">Sistem </p>
+  <p class="subtitle">Sistem Informasi Ekstrakurikuler </p>
 
   <!-- CARDS -->
   <div class="cards">
     <div class="card" onclick="selectRole(this, '{{ route('login-admin') }}')">
       <i class="fas fa-user-shield"></i>
       <h2>Admin</h2>
-      <p>Kelola data & sistem sekolah dengan mudah</p>
+      <p>Kelola data ekstrakurikuler, anggota, dan sistem dengan mudah</p>
     </div>
 
     <div class="card" onclick="selectRole(this, '{{ route('login-pembina') }}')">
       <i class="fas fa-chalkboard-teacher"></i>
       <h2>Pembina</h2>
-      <p>Monitoring & bimbingan siswa secara real-time</p>
+      <p>Monitoring kegiatan, absensi siswa, dan bimbingan secara real-time</p>
     </div>
 
     <div class="card" onclick="selectRole(this, '{{ route('login-siswa') }}')">
       <i class="fas fa-user-graduate"></i>
       <h2>Siswa</h2>
-      <p>Akses nilai, jadwal & informasi akademik</p>
+      <p>Pilih ekstrakurikuler, lihat jadwal, dan lakukan absensi kehadiran</p>
     </div>
   </div>
 

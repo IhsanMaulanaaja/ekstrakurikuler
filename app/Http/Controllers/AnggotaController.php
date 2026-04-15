@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AnggotaEkskul;
 use App\Models\Ekstrakurikuler;
+use App\Models\Pendaftaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
@@ -11,6 +13,7 @@ class AnggotaController extends Controller
     public function indexAdmin()
     {
         $user = auth()->user();
+        $isAdmin = $user->role === 'admin';
         
         if ($user->role === 'pembina') {
             // Pembina hanya bisa melihat anggota dari ekskul yang mereka bina
@@ -25,18 +28,14 @@ class AnggotaController extends Controller
             $ekskuls = Ekstrakurikuler::where('pembina_id', $user->id)->get();
             $ekskulName = $ekskuls->first()?->nama;
         } else {
-            // Admin bisa melihat semua anggota (unique users saja)
-            $userIds = AnggotaEkskul::distinct('user_id')->pluck('user_id');
-            $anggota = AnggotaEkskul::with('user', 'ekskul')
-                ->whereIn('user_id', $userIds)
-                ->groupBy('user_id')
-                ->latest('id')
-                ->paginate(10);
+            // Admin melihat SEMUA siswa di sekolah (dari tabel users)
+            $semuaSiswa = User::where('role', 'siswa')->paginate(10);
+            $anggota = $semuaSiswa;
             $ekskuls = Ekstrakurikuler::all();
             $ekskulName = null;
         }
         
-        return view('anggota-admin', compact('anggota', 'ekskuls', 'user', 'ekskulName'));
+        return view('anggota-admin', compact('anggota', 'ekskuls', 'user', 'ekskulName', 'isAdmin'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -78,6 +77,11 @@ class AnggotaController extends Controller
                 return back()->with('error', 'Anda tidak memiliki akses ke anggota ini');
             }
         }
+
+        // Hapus juga record pendaftaran yang sesuai agar user bisa daftar lagi
+        Pendaftaran::where('user_id', $anggota->user_id)
+                    ->where('ekskul_id', $anggota->ekskul_id)
+                    ->delete();
 
         $anggota->delete();
 

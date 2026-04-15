@@ -23,4 +23,16 @@ class AnggotaEkskul extends Model
     {
         return $this->belongsTo(Ekstrakurikuler::class, 'ekskul_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When AnggotaEkskul is deleted, also delete the corresponding Pendaftaran
+        static::deleting(function ($model) {
+            Pendaftaran::where('user_id', $model->user_id)
+                ->where('ekskul_id', $model->ekskul_id)
+                ->delete();
+        });
+    }
 }

@@ -38,7 +38,7 @@ class EkskulController extends Controller
             'nama' => 'required|string|max:255|unique:ekstrakurikuler',
             'deskripsi' => 'nullable|string',
             'pembina_id' => 'required|exists:users,id',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:5120',
         ]);
 
         $data = $request->only(['nama', 'deskripsi', 'pembina_id']);
@@ -75,7 +75,7 @@ class EkskulController extends Controller
             'nama' => 'required|string|max:255|unique:ekstrakurikuler,nama,' . $ekstrakurikuler->id,
             'deskripsi' => 'nullable|string',
             'pembina_id' => 'required|exists:users,id',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:5120',
         ]);
 
         $data = $request->only(['nama', 'deskripsi', 'pembina_id']);

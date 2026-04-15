@@ -264,10 +264,7 @@
             cursor: pointer;
         }
 
-        /* jurusan full width */
-        .info-grid .jurusan-row {
-            grid-column: 1 / 2;
-        }
+
 
         /* ===== TWO COL section ===== */
         .two-col-section {
@@ -515,11 +512,6 @@
                     <div class="input-row">
                         <span class="input-icon" style="color:#3b82f6;"><i class="fas fa-map-marker-alt"></i></span>
                         <input type="text" placeholder="Masukan alamat anda" value="{{ Auth::user()->alamat }}" readonly>
-                    </div>
-
-                    <div class="input-row jurusan-row">
-                        <span class="input-icon" style="color:#8b5cf6;"><i class="fas fa-graduation-cap"></i></span>
-                        <input type="text" placeholder="Masukan jurusan anda" value="{{ Auth::user()->jurusan ?? '-' }}" readonly>
                     </div>
 
                 </div>

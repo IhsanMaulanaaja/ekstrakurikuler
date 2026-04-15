@@ -423,7 +423,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="foto">Foto (Opsional)</label>
+                        <label for="foto">Foto *</label>
                         @if ($ekstrakurikuler->foto)
                             <div class="current-foto">
                                 <p>📷 Foto Saat Ini:</p>
@@ -440,7 +440,7 @@
                         @error('foto')
                             <span class="error">{{ $message }}</span>
                         @enderror
-                        <small>Format: JPG, PNG, GIF. Max: 2MB</small>
+                        <small>Format: JPG, PNG, JPEG. Max: 5MB</small>
                     </div>
 
                     <div class="btn-group">

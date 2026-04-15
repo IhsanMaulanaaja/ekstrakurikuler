@@ -407,7 +407,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="foto">Foto (Opsional)</label>
+                        <label for="foto">Foto *</label>
                         <div class="file-input-wrapper">
                             <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(event)">
                             <label for="foto" class="file-input-label">
@@ -418,7 +418,7 @@
                         @error('foto')
                             <span class="error">{{ $message }}</span>
                         @enderror
-                        <small>Format: JPG, PNG, GIF. Max: 2MB</small>
+                        <small>Format: JPG, PNG, JPEG. Max: 5MB</small>
                     </div>
 
                     <div class="btn-group">

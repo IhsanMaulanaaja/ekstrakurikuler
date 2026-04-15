@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login Siswa - {{ config('app.name', 'SMK Ciomas') }}</title>
+  <title>Login Siswa - {{ config('app.name', 'SMKN 1 Ciomas') }}</title>
 
   <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -404,7 +404,7 @@
       <h1><i class="fas fa-user-graduate"></i> LOGIN SISWA</h1>
       <div class="role-info">
         <i class="fas fa-lock"></i>
-        <span>Akses akademik dan informasi penting Anda</span>
+        <span>Akses ekstrakurikuler, jadwal, dan lakukan absensi kehadiran</span>
       </div>
 
       @if ($errors->any())
@@ -423,7 +423,7 @@
           <label><i class="fas fa-envelope" style="margin-right: 6px;"></i>Email</label>
           <div class="input-wrapper">
             <i class="fas fa-envelope"></i>
-            <input type="email" name="email" value="{{ old('email') }}" required placeholder="siswa@school.com">
+            <input type="email" name="email" value="{{ old('email') }}" required placeholder="siswa@example.com">
           </div>
         </div>
 

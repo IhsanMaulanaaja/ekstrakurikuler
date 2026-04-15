@@ -508,17 +508,9 @@
                     <!-- Education Info -->
                     <div class="form-row-3 role-dependent" data-role-dependent style="{{ old('role', $user->role) === 'siswa' ? '' : 'display:none;' }}">
                         <div class="form-group">
-                            <label class="form-label">Jurusan</label>
-                            <input type="text" name="jurusan" value="{{ old('jurusan', $user->jurusan) }}" 
-                                class="form-input" placeholder="Contoh: RPL, TKJ" {{ old('role', $user->role) === 'siswa' ? '' : 'disabled' }}>
-                            @error('jurusan')
-                                <div class="form-error">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
                             <label class="form-label">Kelas</label>
                             <input type="text" name="kelas" value="{{ old('kelas', $user->kelas) }}" 
-                                class="form-input" placeholder="Contoh: XII RPL 1" {{ old('role', $user->role) === 'siswa' ? '' : 'disabled' }}>
+                                class="form-input" placeholder="Contoh: XI PPLG 1" {{ old('role', $user->role) === 'siswa' ? '' : 'disabled' }}>
                             @error('kelas')
                                 <div class="form-error">{{ $message }}</div>
                             @enderror

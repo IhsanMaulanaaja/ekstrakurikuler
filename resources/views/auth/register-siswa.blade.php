@@ -476,7 +476,7 @@
               <i class="fas fa-book"></i>
               <input type="text" id="kelas_jurusan" name="kelas_jurusan" value="{{ old('kelas_jurusan') }}" required placeholder="XI PPLG 1">
             </div>
-            <span class="form-hint">💡 Contoh: XI PPLG 1&Rekayasa Perangkat Lunak</span>
+            <span class="form-hint">💡 Contoh: XI PPLG 1</span>
             @error('kelas_jurusan')<span class="error-text"><i class="fas fa-times-circle" style="margin-right: 4px;"></i>{{ $message }}</span>@enderror
           </div>
         </div>

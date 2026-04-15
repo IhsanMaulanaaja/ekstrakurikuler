@@ -628,7 +628,13 @@
         <main class="main">
 
             <div class="header-actions">
-                <h1>{{ $ekskulName ? "Anggota $ekskulName" : 'Kelola Siswa' }}</h1>
+                <h1>
+                    @if($isAdmin)
+                        Daftar Siswa
+                    @else
+                        {{ $ekskulName ? "Anggota $ekskulName" : 'Kelola Siswa' }}
+                    @endif
+                </h1>
             </div>
 
             @if(session('success'))
@@ -654,7 +660,9 @@
                                 <th style="width: 25%;">Nama Siswa</th>
                                 <th style="width: 15%;">Kelas</th>
                                 <th style="width: 25%;">Email</th>
-                                <th style="width: 12%;">Status</th>
+                                @if(!$isAdmin)
+                                    <th style="width: 12%;">Status</th>
+                                @endif
                                 <th style="width: 15%;">Aksi</th>
                             </tr>
                         </thead>
@@ -662,22 +670,42 @@
                             @foreach($anggota as $member)
                                 <tr>
                                     <td>{{ ($anggota->currentPage() - 1) * $anggota->perPage() + $loop->iteration }}</td>
-                                    <td class="student-name">{{ $member->user->name }}</td>
-                                    <td>{{ $member->user->kelas ?? '-' }}</td>
-                                    <td>{{ $member->user->email }}</td>
-                                    <td>
-                                        <span class="status-badge status-{{ str_replace(' ', '-', strtolower($member->status)) }}">
-                                            {{ ucfirst($member->status) }}
-                                        </span>
+                                    <td class="student-name">
+                                        @if($isAdmin)
+                                            {{ $member->name }}
+                                        @else
+                                            {{ $member->user->name }}
+                                        @endif
                                     </td>
+                                    <td>
+                                        @if($isAdmin)
+                                            {{ $member->kelas ?? '-' }}
+                                        @else
+                                            {{ $member->user->kelas ?? '-' }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($isAdmin)
+                                            {{ $member->email }}
+                                        @else
+                                            {{ $member->user->email }}
+                                        @endif
+                                    </td>
+                                    @if(!$isAdmin)
+                                        <td>
+                                            <span class="status-badge status-{{ str_replace(' ', '-', strtolower($member->status)) }}">
+                                                {{ ucfirst($member->status) }}
+                                            </span>
+                                        </td>
+                                    @endif
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn-tiny btn-edit"
-                                                onclick="openEditModal({{ $member->id }}, '{{ $member->status }}')">
+                                                onclick="openEditModal({{ $isAdmin ? $member->id : $member->id }}, '{{ $isAdmin ? 'aktif' : $member->status }}')">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
                                             <button class="btn-tiny btn-hapus"
-                                                onclick="openDeleteModal({{ $member->id }})">
+                                                onclick="openDeleteModal({{ $isAdmin ? $member->id : $member->id }})">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
                                         </div>
