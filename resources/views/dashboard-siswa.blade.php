@@ -418,25 +418,29 @@
         .ek-name {
             font-weight: 600;
             min-width: 75px;
+            width: 35%;
         }
 
         .ek-dash {
             color: #888;
-            padding: 0 6px;
+            padding: 0 4px;
+            width: 5%;
+            text-align: center;
         }
 
         .ek-schedule {
             color: #333;
+            width: 60%;
         }
 
         .ek-dash2 {
-            color: #888;
-            padding: 0 6px;
+            display: none;
         }
 
         .ek-status {
             font-weight: 800;
             color: #1a1a1a;
+            display: none;
         }
 
         /* ===== PENDAFTARAN STATUS ===== */
@@ -455,15 +459,19 @@
         .pend-ekskul {
             font-weight: 600;
             min-width: 100px;
+            width: 35%;
         }
 
         .pend-dash {
             color: #888;
-            padding: 0 6px;
+            padding: 0 4px;
+            width: 5%;
+            text-align: center;
         }
 
         .pend-status {
             font-weight: 700;
+            width: 60%;
         }
 
         .pend-reason {
@@ -511,15 +519,19 @@
         .nilai-ekskul {
             font-weight: 600;
             min-width: 100px;
+            width: 35%;
         }
 
         .nilai-dash {
             color: #888;
-            padding: 0 6px;
+            padding: 0 4px;
+            width: 5%;
+            text-align: center;
         }
 
         .nilai-grade {
             font-weight: 700;
+            width: 60%;
         }
 
         .grade-a {
@@ -721,9 +733,7 @@
                     <tr>
                         <td class="ek-name">{{ $ekskul->nama }}</td>
                         <td class="ek-dash">—</td>
-                        <td class="ek-schedule">{{ $ekskul->jadwal_lengkap ?? 'Jadwal belum diatur' }}</td>
-                        <td class="ek-dash2">—</td>
-                        <td class="ek-status"><b>Aktif</b></td>
+                        <td class="ek-schedule">{{ $ekskul->jadwal_lengkap ?? 'Jadwal belum diatur' }} — <b>Aktif</b></td>
                     </tr>
                     @empty
                     <tr>

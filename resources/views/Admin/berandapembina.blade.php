@@ -360,6 +360,98 @@
         .empty-state p {
             font-size: 14px;
         }
+
+        /* KUOTA SECTION */
+        .kuota-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .kuota-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .kuota-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .kuota-progress {
+            width: 100%;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .kuota-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            transition: width 0.3s ease;
+        }
+
+        .kuota-progress-bar.warning {
+            background: linear-gradient(90deg, #f59e0b, #f97316);
+        }
+
+        .kuota-progress-bar.danger {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .kuota-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .kuota-info-left {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .kuota-info-left strong {
+            color: #111;
+            font-weight: 700;
+        }
+
+        .kuota-status {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .kuota-status.available {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .kuota-status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .kuota-status.full {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
     </style>
 </head>
 
@@ -468,6 +560,47 @@
                     <div class="stat-card members">
                         <h3>👥 Anggota Aktif</h3>
                         <div class="number">{{ $totalAnggota }}</div>
+                    </div>
+                </div>
+
+                <!-- KUOTA SECTION -->
+                <div class="kuota-section">
+                    <div class="kuota-card">
+                        <h4>📊 Kuota Peserta</h4>
+                        @php
+                            $persentase = $ekskul->kuota > 0 ? round(($totalAnggota / $ekskul->kuota) * 100) : 0;
+                            $statusKuota = $ekskul->kuota === 0 ? 'Tidak ada' : ($persentase >= 100 ? 'Penuh' : ($persentase >= 75 ? 'Hampir Penuh' : 'Tersedia'));
+                            $classProgress = $persentase >= 100 ? 'danger' : ($persentase >= 75 ? 'warning' : '');
+                            $classStatus = $persentase >= 100 ? 'full' : ($persentase >= 75 ? 'warning' : 'available');
+                        @endphp
+                        
+                        @if($ekskul->kuota > 0)
+                            <div class="kuota-progress">
+                                <div class="kuota-progress-bar {{ $classProgress }}" style="width: {{ min($persentase, 100) }}%;">
+                                    @if(min($persentase, 100) > 10)
+                                        {{ min($persentase, 100) }}%
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="kuota-info">
+                                <div class="kuota-info-left">
+                                    <strong>{{ $totalAnggota }}/{{ $ekskul->kuota }}</strong> peserta
+                                </div>
+                                <span class="kuota-status {{ $classStatus }}">{{ $statusKuota }}</span>
+                            </div>
+                            <a href="{{ route('ekstrakurikuler.editKuota') }}" style="display: inline-block; margin-top: 12px; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
+                                <i class="fas fa-edit"></i> Ubah Kuota
+                            </a>
+                        @else
+                            <div style="padding: 20px; text-align: center; color: #999;">
+                                <p style="font-size: 13px; margin: 0; margin-bottom: 10px;">
+                                    <i class="fas fa-info-circle"></i> Kuota belum diatur
+                                </p>
+                                <a href="{{ route('ekstrakurikuler.editKuota') }}" style="display: inline-block; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
+                                    <i class="fas fa-plus-circle"></i> Atur Kuota
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

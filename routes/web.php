@@ -30,6 +30,8 @@ Route::resource('/users', UsersController::class)->middleware(['auth', 'verified
 use App\Http\Controllers\EkskulController;
 Route::get('/pilihan-ekskul', [EkskulController::class, 'pilihanEkskul'])->middleware(['auth', 'verified'])->name('pilihan-ekskul');
 Route::resource('/ekstrakurikuler', EkskulController::class)->middleware(['auth', 'verified']);
+Route::get('/ekstrakurikuler-kuota/edit', [EkskulController::class, 'editKuota'])->middleware(['auth', 'verified'])->name('ekstrakurikuler.editKuota');
+Route::put('/ekstrakurikuler-kuota/update', [EkskulController::class, 'updateKuota'])->middleware(['auth', 'verified'])->name('ekstrakurikuler.updateKuota');
 
 
 // PENDAFTARAN EKSKUL

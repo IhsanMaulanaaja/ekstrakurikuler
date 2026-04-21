@@ -107,4 +107,42 @@ class EkskulController extends Controller
         $ekskulList = Ekstrakurikuler::all();
         return view('pilihan-ekskul-siswa', compact('ekskulList'));
     }
+
+    public function editKuota()
+    {
+        $user = auth()->user();
+        if ($user?->role !== 'pembina') {
+            abort(403);
+        }
+
+        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->first();
+        if (!$ekskul) {
+            return redirect()->route('dashboard-pembina')->with('error', 'Ekstrakurikuler tidak ditemukan');
+        }
+
+        return view('ekstrakurikuler.edit-kuota', compact('ekskul'));
+    }
+
+    public function updateKuota(Request $request)
+    {
+        $user = auth()->user();
+        if ($user?->role !== 'pembina') {
+            abort(403);
+        }
+
+        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->first();
+        if (!$ekskul) {
+            return redirect()->route('dashboard-pembina')->with('error', 'Ekstrakurikuler tidak ditemukan');
+        }
+
+        $request->validate([
+            'kuota' => 'required|integer|min:0|max:1000',
+        ]);
+
+        $ekskul->update([
+            'kuota' => $request->kuota,
+        ]);
+
+        return redirect()->route('dashboard-pembina')->with('success', 'Kuota ekstrakurikuler berhasil diperbarui');
+    }
 }
