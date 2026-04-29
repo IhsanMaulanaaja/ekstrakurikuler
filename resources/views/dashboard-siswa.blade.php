@@ -768,7 +768,7 @@
             @endif
 
             <!-- Nilai Siswa -->
-            @if($nilaiSiswa->count() > 0)
+            @if(count($nilaiSiswa) > 0)
             <div class="card">
                 <div class="card-title"><span style="font-size:17px;">⭐</span> Nilai Saya</div>
                 <table class="nilai-table">

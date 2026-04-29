@@ -354,9 +354,12 @@
         .badge.menunggu {
             background: #f0a500;
         }
+        .badge.disetujui {
+            background: #22c55e;
+        }
 
-        .badge.diterima {
-            background: #2e8b57;
+        .badge.ditolak {
+            background: #e63946;
         }
 
         /* ===== FORM ELEMENTS ===== */
