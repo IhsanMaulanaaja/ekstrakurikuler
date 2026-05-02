@@ -82,7 +82,10 @@ class PrestasiController extends Controller
             }
         }
 
-        $path = $request->file('foto')->store('dokumentasi', 'public');
+        // Simpan foto ke public/assets/dokumentasi
+        $filename = time() . '_' . $request->file('foto')->getClientOriginalName();
+        $request->file('foto')->move(public_path('assets/dokumentasi'), $filename);
+        $path = 'assets/dokumentasi/' . $filename;
 
         Dokumentasi::create([
             'foto' => $path,
@@ -118,8 +121,17 @@ class PrestasiController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            if ($doc->foto) Storage::disk('public')->delete($doc->foto);
-            $doc->foto = $request->file('foto')->store('dokumentasi', 'public');
+            if ($doc->foto) {
+                $fotoPath = $doc->foto;
+                if (str_starts_with($fotoPath, 'assets/dokumentasi/')) {
+                    @unlink(public_path($fotoPath));
+                } elseif (str_starts_with($fotoPath, 'dokumentasi/')) {
+                    Storage::disk('public')->delete($fotoPath);
+                }
+            }
+            $filename = time() . '_' . $request->file('foto')->getClientOriginalName();
+            $request->file('foto')->move(public_path('assets/dokumentasi'), $filename);
+            $doc->foto = 'assets/dokumentasi/' . $filename;
         }
 
         $doc->nama_lomba = $request->nama_lomba;
@@ -145,7 +157,14 @@ class PrestasiController extends Controller
             }
         }
 
-        if ($doc->foto) Storage::disk('public')->delete($doc->foto);
+        if ($doc->foto) {
+            $fotoPath = $doc->foto;
+            if (str_starts_with($fotoPath, 'assets/dokumentasi/')) {
+                @unlink(public_path($fotoPath));
+            } elseif (str_starts_with($fotoPath, 'dokumentasi/')) {
+                Storage::disk('public')->delete($fotoPath);
+            }
+        }
         $doc->delete();
 
         return back()->with('success', 'Foto berhasil dihapus');

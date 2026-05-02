@@ -87,7 +87,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -102,12 +102,13 @@
         }
 
         .sidebar-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 800;
             color: #1a1a1a;
             text-align: center;
             margin-bottom: 16px;
             line-height: 1.35;
+            white-space: nowrap;
         }
 
         .sidebar-divider {
@@ -121,7 +122,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
             flex: 1;
         }
 
@@ -129,14 +130,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 11px 16px;
+            padding: 12px 14px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 15.5px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
             transition: background 0.15s;
+            white-space: nowrap;
         }
 
         .nav-item:hover {
@@ -144,8 +146,8 @@
         }
 
         .nav-item.active {
-            background: #5b8deb;
-            color: #fff;
+            background: #ffffff;
+            color: #1a1a1a;
             font-weight: 700;
         }
 
@@ -444,7 +446,7 @@
                 <div class="gallery-grid">
                     @forelse($dokumentasis as $doc)
                         <div class="photo-card">
-                            <img src="{{ $doc->foto ? asset('storage/' . $doc->foto) : asset('images/no-image.png') }}" alt="Foto">
+                            <img src="{{ $doc->foto ? $doc->fotoUrl : asset('assets/siswa.png') }}" alt="Foto" onerror="this.onerror=null;this.src='{{ asset('assets/siswa.png') }}'">
                             <div class="photo-info">
                                 <div class="info-row">
                                     <span class="filename">{{ Str::limit($doc->nama_lomba ?? $doc->keterangan, 20) ?? 'Foto ' . $doc->id }}</span>

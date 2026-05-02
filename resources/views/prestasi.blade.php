@@ -212,7 +212,7 @@
             <div class="prestasi-card">
                 <div class="prestasi-card-image">
                     @if ($item->foto)
-                        <img src="{{ $item->fotoUrl }}" alt="{{ $item->lomba?->nama_lomba ?? $item->nama_lomba ?? 'Prestasi' }}" />
+                        <img src="{{ $item->fotoUrl }}" alt="Foto Prestasi" class="foto-thumb" onerror="this.onerror=null;this.src='{{ asset('assets/siswa.png') }}'">
                     @else
                         <div class="prestasi-card-image-placeholder">
                             <i class="fas fa-image"></i>
@@ -220,10 +220,8 @@
                     @endif
                 </div>
                 <div class="prestasi-card-content">
-                    <div>
-                        <h3>{{ $item->lomba?->nama_lomba ?? $item->nama_lomba ?? 'Prestasi' }}</h3>
-                        <p>{{ $item->keterangan ?? '-' }}</p>
-                    </div>
+                    <h3 class="prestasi-title">{{ $item->lomba?->nama_lomba ?? $item->nama_lomba ?? 'Prestasi' }}</h3>
+                    <p class="prestasi-desc">{{ $item->keterangan ?? '-' }}</p>
                     <div class="prestasi-card-date">
                         <i class="fas fa-calendar-alt"></i>
                         <span>

@@ -499,7 +499,7 @@
                     Absensi
                 </a>
                 <a class="nav-item {{ request()->routeIs('prestasi-admin') ? 'active' : '' }}" href="{{ route('prestasi-admin') }}">
-                    <span class="nav-icon"><i class="fas fa-trophy"></i></span>
+                    <span class="nav-icon"><i class="fas fa-medal"></i></span>
                     Kegiatan & Prestasi
                 </a>
                 <a class="nav-item {{ request()->routeIs('pengumuman.index') ? 'active' : '' }}" href="{{ route('pengumuman.index') }}">
@@ -588,7 +588,7 @@
                                 </div>
                                 <span class="kuota-status {{ $classStatus }}">{{ $statusKuota }}</span>
                             </div>
-                            <a href="{{ route('ekstrakurikuler.edit', $ekskul->id) }}" style="display: inline-block; margin-top: 12px; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
+                            <a href="{{ route('ekstrakurikuler.editKuota', $ekskul->id) }}" style="display: inline-block; margin-top: 12px; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
                                 <i class="fas fa-edit"></i> Ubah Kuota
                             </a>
                         @else
@@ -596,7 +596,7 @@
                                 <p style="font-size: 13px; margin: 0; margin-bottom: 10px;">
                                     <i class="fas fa-info-circle"></i> Kuota belum diatur
                                 </p>
-                                <a href="{{ route('ekstrakurikuler.edit', $ekskul->id) }}" style="display: inline-block; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
+                                <a href="{{ route('ekstrakurikuler.editKuota', $ekskul->id) }}" style="display: inline-block; font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 600;">
                                     <i class="fas fa-plus-circle"></i> Atur Kuota
                                 </a>
                             </div>

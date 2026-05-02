@@ -85,18 +85,18 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 260px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 0 30px;
+            padding: 20px 12px 20px;
+            min-height: calc(100vh - 62px);
             flex-shrink: 0;
-            height: calc(100vh - 62px);
-            overflow: hidden;
-            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 62px;
+            height: calc(100vh - 62px);
+            overflow-y: auto;
         }
 
         .sidebar-logo {
@@ -105,31 +105,32 @@
         }
 
         .sidebar-logo img {
-            width: 130px;
-            height: 130px;
-            margin-bottom: 12px;
+            width: 90px;
+            height: 90px;
+            margin-bottom: 8px;
         }
 
         .sidebar-title {
-            font-size: 20px;
-            font-weight: 900;
+            font-size: 14px;
+            font-weight: 800;
             color: #1a1a1a;
-            margin-bottom: 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            line-height: 1.35;
         }
 
         .sidebar-divider {
             width: 100%;
             height: 1px;
-            background: #608eb1;
-            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.13);
+            margin-bottom: 8px;
         }
 
         .sidebar-nav {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 0 16px;
+            gap: 2px;
             flex: 1;
         }
 
@@ -139,21 +140,22 @@
             gap: 10px;
             padding: 10px 12px;
             border-radius: 10px;
+            cursor: pointer;
             font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: background 0.15s;
         }
 
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .nav-item.active {
             background: #ffffff;
             color: #1a1a1a;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         .nav-item .nav-icon {
@@ -167,38 +169,29 @@
 
         .logout-container {
             width: 100%;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: auto;
-        }
-
-        .logout-icon-btn {
-            background: #e63946;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            border: none;
+            margin-top: 14px;
         }
 
         .logout-btn {
+            width: 100%;
             background: #e63946;
             color: #fff;
             border: none;
-            border-radius: 25px;
-            padding: 12px 30px;
-            font-size: 18px;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 15px;
             font-weight: 800;
-            font-family: inherit;
+            font-family: 'Nunito', sans-serif;
             cursor: pointer;
-            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+
+        .logout-btn:hover {
+            background: #c1121f;
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -718,15 +711,12 @@
         <div class="sidebar-divider"></div>
 
         <nav class="sidebar-nav">
-            <!-- BERANDA -->
-            <a class="nav-item" href="{{ $user?->role === 'pembina' ? route('dashboard-pembina') : route('dashboard-admin') }}">
-                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                Beranda
-            </a>
-
-            <!-- UNTUK PEMBINA: PENDAFTAR DI ATAS -->
             @if($user?->role === 'pembina')
-                <a class="nav-item active" href="{{ route('pendaftaran-ekskul') }}">
+                <a class="nav-item" href="{{ route('dashboard-pembina') }}">
+                    <span class="nav-icon"><i class="fas fa-home"></i></span>
+                    Beranda
+                </a>
+                <a class="nav-item {{ request()->routeIs('pendaftaran-ekskul') ? 'active' : '' }}" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
                     Pendaftar
                 </a>
@@ -734,8 +724,31 @@
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Siswa
                 </a>
+                <a class="nav-item" href="{{ route('jadwal-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-calendar"></i></span>
+                    Jadwal Latihan
+                </a>
+                <a class="nav-item" href="{{ route('absensi-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
+                    Absensi
+                </a>
+                <a class="nav-item" href="{{ route('prestasi-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-medal"></i></span>
+                    Kegiatan & Prestasi
+                </a>
+                <a class="nav-item" href="{{ route('pengumuman.index') }}">
+                    <span class="nav-icon"><i class="fas fa-bullhorn"></i></span>
+                    Pengumuman
+                </a>
+                <a class="nav-item" href="{{ route('nilai.index') }}">
+                    <span class="nav-icon"><i class="fas fa-star"></i></span>
+                    Nilai Siswa
+                </a>
             @else
-                <!-- UNTUK ADMIN: MENU ADMIN DULU -->
+                <a class="nav-item" href="{{ route('dashboard-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-home"></i></span>
+                    Beranda
+                </a>
                 <a class="nav-item" href="{{ route('users.index') }}">
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Pengguna
@@ -748,33 +761,23 @@
                     <span class="nav-icon"><i class="fas fa-book"></i></span>
                     Daftar Ekskul
                 </a>
-                <a class="nav-item active" href="{{ route('pendaftaran-ekskul') }}">
+                <a class="nav-item {{ request()->routeIs('pendaftaran-ekskul') ? 'active' : '' }}" href="{{ route('pendaftaran-ekskul') }}">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
                     Pendaftar
                 </a>
+                <a class="nav-item" href="{{ route('jadwal-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-calendar"></i></span>
+                    Jadwal Latihan
+                </a>
+                <a class="nav-item" href="{{ route('absensi-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
+                    Absensi
+                </a>
+                <a class="nav-item" href="{{ route('prestasi-admin') }}">
+                    <span class="nav-icon"><i class="fas fa-medal"></i></span>
+                    Kegiatan & Prestasi
+                </a>
             @endif
-
-            <!-- MENU SHARED BOTH -->
-            <a class="nav-item" href="{{ route('jadwal-admin') }}">
-                <span class="nav-icon"><i class="fas fa-calendar"></i></span>
-                Jadwal Latihan
-            </a>
-            <a class="nav-item" href="{{ route('absensi-admin') }}">
-                <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
-                Absensi
-            </a>
-            <a class="nav-item" href="{{ route('prestasi-admin') }}">
-                <span class="nav-icon"><i class="fas fa-medal"></i></span>
-                Kegiatan & Prestasi
-            </a>
-            <a class="nav-item" href="{{ route('pengumuman.index') }}">
-                <span class="nav-icon"><i class="fas fa-bullhorn"></i></span>
-                Pengumuman
-            </a>
-            <a class="nav-item" href="{{ route('nilai.index') }}">
-                <span class="nav-icon"><i class="fas fa-star"></i></span>
-                Nilai Siswa
-            </a>
         </nav>
 
          <div class="logout-area">

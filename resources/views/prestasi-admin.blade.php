@@ -87,7 +87,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -577,13 +577,30 @@
                 </div>
             </div>
 
+            @if(session('success'))
+                <div style="background:#dffcf0;border:1px solid #86efac;color:#166534;padding:14px;border-radius:8px;margin-bottom:16px;">
+                    <i class="fas fa-check-circle" style="margin-right:8px;"></i> {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div style="background:#fee;border:1px solid #fcc;color:#c00;padding:14px;border-radius:8px;margin-bottom:16px;">
+                    <i class="fas fa-exclamation-circle" style="margin-right:8px;"></i> {{ session('error') }}
+                </div>
+            @endif
+
             <div class="card-container">
                 <h2>Foto Dokumentasi</h2>
 
                 <div class="gallery-grid">
                     @forelse($dokumentasis as $doc)
                         <div class="photo-card">
-                            <img src="{{ $doc->foto ? Storage::url($doc->foto) : asset('images/no-image.png') }}" alt="Foto">
+                            @if($doc->foto)
+                                <img src="{{ $doc->fotoUrl }}"
+                                alt="Foto" class="foto-thumb" onerror="this.onerror=null;this.src='{{ asset('assets/siswa.png') }}'">
+                            @else
+                                <img src="{{ asset('assets/siswa.png') }}"
+                                alt="Foto" class="foto-thumb">
+                            @endif
                             <div class="photo-info">
                                 <div class="info-row">
                                     <span
@@ -639,6 +656,16 @@
                 <button type="button" class="close-btn" onclick="closeModal('addModal')"><i
                         class="fas fa-times"></i></button>
             </div>
+            @if($errors->any())
+                <div style="background:#fee;border:1px solid #fcc;color:#c00;padding:12px;border-radius:6px;margin-bottom:16px;">
+                    <strong>Validasi Gagal:</strong>
+                    <ul style="margin:8px 0 0 20px;padding:0;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="form-group">
                 <label>Ekstrakurikuler</label>
                 <select name="ekstrakurikuler_id" class="form-control" required>
@@ -789,6 +816,14 @@
 
             openModal('detailModal');
         }
+
+        // Tampilkan modal jika ada error validasi
+        document.addEventListener('DOMContentLoaded', function() {
+            @if($errors->any())
+                openModal('addModal');
+                document.querySelector('input[name="nama_lomba"]')?.focus();
+            @endif
+        });
     </script>
 </body>
 

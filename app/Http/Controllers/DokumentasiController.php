@@ -28,7 +28,32 @@ class DokumentasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ekstrakurikuler_id' => 'required|exists:ekstrakurikuler,id',
+            'nama_lomba' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'keterangan' => 'nullable|string|max:255',
+        ]);
+
+        // Proses upload foto
+        $fotoName = null;
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $fotoName = time() . '_' . uniqid() . '.' . $foto->getClientOriginalExtension();
+            $foto->move(public_path('assets'), $fotoName);
+        }
+
+        // Simpan data ke database
+        $dokumentasi = \App\Models\Dokumentasi::create([
+            'ekstrakurikuler_id' => $request->ekstrakurikuler_id,
+            'nama_lomba' => $request->nama_lomba,
+            'tanggal' => $request->tanggal,
+            'foto' => $fotoName,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->back()->with('success', 'Dokumentasi berhasil ditambahkan!');
     }
 
     /**

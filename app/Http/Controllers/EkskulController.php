@@ -108,14 +108,14 @@ class EkskulController extends Controller
         return view('pilihan-ekskul-siswa', compact('ekskulList'));
     }
 
-    public function editKuota()
+    public function editKuota($id)
     {
         $user = auth()->user();
         if ($user?->role !== 'pembina') {
             abort(403);
         }
 
-        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->first();
+        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->where('id', $id)->first();
         if (!$ekskul) {
             return redirect()->route('dashboard-pembina')->with('error', 'Ekstrakurikuler tidak ditemukan');
         }
@@ -123,14 +123,14 @@ class EkskulController extends Controller
         return view('ekstrakurikuler.edit-kuota', compact('ekskul'));
     }
 
-    public function updateKuota(Request $request)
+    public function updateKuota(Request $request, $id)
     {
         $user = auth()->user();
         if ($user?->role !== 'pembina') {
             abort(403);
         }
 
-        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->first();
+        $ekskul = Ekstrakurikuler::where('pembina_id', $user->id)->where('id', $id)->first();
         if (!$ekskul) {
             return redirect()->route('dashboard-pembina')->with('error', 'Ekstrakurikuler tidak ditemukan');
         }

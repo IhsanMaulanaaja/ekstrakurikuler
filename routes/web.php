@@ -50,6 +50,8 @@ Route::resource('/users', UsersController::class)->middleware(['auth', 'verified
 use App\Http\Controllers\EkskulController;
 Route::get('/pilihan-ekskul', [EkskulController::class, 'pilihanEkskul'])->middleware(['auth', 'verified'])->name('pilihan-ekskul');
 Route::resource('/ekstrakurikuler', EkskulController::class)->middleware(['auth', 'verified']);
+Route::get('/ekstrakurikuler/{id}/kuota/edit', [EkskulController::class, 'editKuota'])->middleware(['auth', 'verified'])->name('ekstrakurikuler.editKuota');
+Route::put('/ekstrakurikuler/{id}/kuota', [EkskulController::class, 'updateKuota'])->middleware(['auth', 'verified'])->name('ekstrakurikuler.updateKuota');
 
 
 // PENDAFTARAN EKSKUL
@@ -118,12 +120,12 @@ Route::delete('/prestasi-ekskul/lomba/{id}', [PrestasiController::class, 'destro
 
 // PENGUMUMAN EKSKUL
 use App\Http\Controllers\PengumumanController;
-Route::get('/pengumuman-ekskul', [PengumumanController::class, 'index'])->middleware(['auth', 'verified'])->name('pengumuman.index');
-Route::get('/pengumuman-ekskul/create', [PengumumanController::class, 'create'])->middleware(['auth', 'verified'])->name('pengumuman.create');
-Route::post('/pengumuman-ekskul', [PengumumanController::class, 'store'])->middleware(['auth', 'verified'])->name('pengumuman.store');
-Route::get('/pengumuman-ekskul/{id}/edit', [PengumumanController::class, 'edit'])->middleware(['auth', 'verified'])->name('pengumuman.edit');
-Route::put('/pengumuman-ekskul/{id}', [PengumumanController::class, 'update'])->middleware(['auth', 'verified'])->name('pengumuman.update');
-Route::delete('/pengumuman-ekskul/{id}', [PengumumanController::class, 'destroy'])->middleware(['auth', 'verified'])->name('pengumuman.destroy');
+Route::get('/pengumuman-ekskul', [PengumumanController::class, 'index'])->middleware(['auth'])->name('pengumuman.index');
+Route::get('/pengumuman-ekskul/create', [PengumumanController::class, 'create'])->middleware(['auth'])->name('pengumuman.create');
+Route::post('/pengumuman-ekskul', [PengumumanController::class, 'store'])->middleware(['auth'])->name('pengumuman.store');
+Route::get('/pengumuman-ekskul/{id}/edit', [PengumumanController::class, 'edit'])->middleware(['auth'])->name('pengumuman.edit');
+Route::put('/pengumuman-ekskul/{id}', [PengumumanController::class, 'update'])->middleware(['auth'])->name('pengumuman.update');
+Route::delete('/pengumuman-ekskul/{id}', [PengumumanController::class, 'destroy'])->middleware(['auth'])->name('pengumuman.destroy');
 
 // NILAI SISWA
 use App\Http\Controllers\NilaiController;

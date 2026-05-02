@@ -59,7 +59,7 @@
         }
 
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -97,37 +97,33 @@
             flex: 1;
         }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a2e;
-            text-decoration: none;
-            transition: background 0.15s;
+       .nav-item { 
+        display: flex; align-items: center; 
+        gap: 12px; padding: 11px 16px; 
+        border-radius: 10px; 
+        cursor: pointer; 
+        font-size: 15.5px; 
+        font-weight: 600; color: #1a1a2e; 
+        text-decoration: none; 
+        transition: background 0.15s; } 
+       
+       .nav-item:hover { 
+            background: rgba(255, 255, 255, 0.35); 
         }
 
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.35);
-        }
+       .nav-item.active { 
+            background: #ffffff; 
+            color: #1a1a2e; 
+            font-weight: 700;  
+        } 
 
-        .nav-item.active {
-            background: #ffffff;
-            color: #1a1a1a;
-            font-weight: 700;
-        }
-
-        .nav-item .nav-icon {
-            width: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            flex-shrink: 0;
+       .nav-item .nav-icon { 
+            width: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 17px; 
+            flex-shrink: 0; 
         }
 
         .logout-area {

@@ -73,7 +73,7 @@
         }
 
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             padding: 20px 12px;
             display: flex;
@@ -121,9 +121,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 12px;
+            padding: 12px 13px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;

@@ -25,6 +25,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         /* ===== TOP NAVBAR ===== */
@@ -89,7 +90,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 235px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -144,7 +145,7 @@
         }
 
         .sidebar-title {
-            font-size: 14.5px;
+            font-size: 14px;
             font-weight: 800;
             color: #1a1a1a;
             text-align: center;
@@ -171,14 +172,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 11px 16px;
+            padding: 12px 14px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 15.5px;
+            font-size: 14px;
             font-weight: 600;
             color: #1a1a2e;
             text-decoration: none;
             transition: background 0.15s;
+            white-space: nowrap;
         }
 
         .nav-item:hover {
@@ -230,6 +232,9 @@
         /* ===== MAIN ===== */
         .main {
             flex: 1;
+            width: 100%;
+            max-width: 2220px;
+            margin: 0 auto;
             padding: 18px 22px 28px;
             display: flex;
             flex-direction: column;
@@ -566,18 +571,41 @@
         .pengumuman-item {
             font-size: 13.5px;
             color: #333;
-            padding: 3px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-            line-height: 1.5;
+            padding: 10px 0;
+            line-height: 1.6;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 10px;
+            word-break: break-word;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .pengumuman-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
         }
 
         .pengumuman-item::before {
             content: '•';
-            font-size: 16px;
-            font-weight: 900;
-            flex-shrink: 0;
+            position: absolute;
+            left: 0;
+            top: 10px;
+            font-size: 14px;
+            color: #3b82f6;
+            line-height: 1;
+        }
+
+        .pengumuman-item .pengumuman-title {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: #111;
+        }
+
+        .pengumuman-item .pengumuman-body {
+            display: block;
+            margin-left: 0;
+            color: #333;
         }
 
         .notif-item {
@@ -596,7 +624,69 @@
             font-weight: 900;
             flex-shrink: 0;
         }
-    </style>
+        @media (max-width: 1120px) {
+            .app-body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                min-height: auto;
+            }
+
+            .main {
+                padding: 16px;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topnav {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 12px 18px;
+            }
+
+            .user-btn {
+                padding: 8px 16px;
+                font-size: 15px;
+            }
+
+            .welcome-card,
+            .card,
+            .stat-card,
+            .jadwal-card {
+                padding: 16px;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                padding: 18px 12px;
+            }
+
+            .nav-item {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .logout-btn {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }    </style>
 </head>
 
 <body>
@@ -816,7 +906,8 @@
                     <div class="card-title"><span style="font-size:17px;">📢</span> Pengumuman</div>
                     @forelse ($pengumuman as $p)
                         <div class="pengumuman-item">
-                            <strong>{{ $p->judul }}:</strong> {{ $p->isi }}
+                            <span class="pengumuman-title">{{ $p->judul }}</span>
+                            <span class="pengumuman-body">{{ $p->isi }}</span>
                         </div>
                     @empty
                         <div class="pengumuman-item" style="color: #777;">Tidak ada pengumuman terbaru.</div>

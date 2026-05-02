@@ -21,6 +21,11 @@ class PengumumanController extends Controller
         // Ambil ekskul yang dibina
         $ekskulIds = Ekstrakurikuler::where('pembina_id', $user->id)->pluck('id');
         
+        // Jika pembina tidak memiliki ekskul, redirect dengan pesan
+        if ($ekskulIds->isEmpty()) {
+            return redirect()->route('dashboard-pembina')->with('error', 'Anda belum diassign ke ekskul manapun. Silakan hubungi admin.');
+        }
+        
         // Ambil pengumuman untuk ekskul yang dibina
         $pengumuman = Pengumuman::whereIn('ekskul_id', $ekskulIds)
             ->with('ekskul')
@@ -43,6 +48,11 @@ class PengumumanController extends Controller
 
         // Ambil ekskul yang dibina
         $ekskuls = Ekstrakurikuler::where('pembina_id', $user->id)->get();
+
+        // Jika pembina tidak memiliki ekskul, redirect dengan pesan
+        if ($ekskuls->isEmpty()) {
+            return redirect()->route('dashboard-pembina')->with('error', 'Anda belum diassign ke ekskul manapun. Silakan hubungi admin.');
+        }
 
         return view('pengumuman-create', compact('ekskuls', 'user'));
     }

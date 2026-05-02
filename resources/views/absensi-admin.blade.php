@@ -88,7 +88,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -779,10 +779,6 @@
                     <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
                         <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
                         Pendaftar
-                    </a>
-                    <a class="nav-item" href="{{ route('jadwal-admin') }}">
-                        <span class="nav-icon"><i class="fas fa-calendar"></i></span>
-                        Jadwal Latihan
                     </a>
                     <a class="nav-item" href="{{ route('jadwal-admin') }}">
                         <span class="nav-icon"><i class="fas fa-calendar"></i></span>

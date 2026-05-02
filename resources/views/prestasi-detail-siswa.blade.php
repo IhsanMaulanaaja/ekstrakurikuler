@@ -320,7 +320,7 @@
                         <tr>
                             <td class="photo-cell">
                                 @if ($lomba->dokumentasi->count() > 0)
-                                    <img src="{{ $lomba->dokumentasi->first()->foto ? asset('storage/' . $lomba->dokumentasi->first()->foto) : asset('images/no-image.png') }}" alt="Foto Lomba" style="width:120px; height:80px; object-fit:cover;">
+                                    <img src="{{ $lomba->dokumentasi->first()->fotoUrl }}" alt="Foto Lomba" style="width:120px; height:80px; object-fit:cover;" onerror="this.onerror=null;this.src='{{ asset('assets/siswa.png') }}'">
                                 @else
                                     <span style="color:#888; font-size:13px; font-style:italic;">Belum ada foto</span>
                                 @endif

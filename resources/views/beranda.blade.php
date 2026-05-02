@@ -213,13 +213,9 @@
         <p>Platform untuk mendokumentasikan pengalaman dan prestasi siswa selama berpartisipasi dalam ekstrakurikuler di sekolah.</p>
     </div>
     <div class="hero-image">
-        @if (file_exists(public_path('assets/ekskul/hero.svg')))
-            <img src="{{ asset('assets/ekskul/hero.svg') }}" alt="Ekstrakurikuler">
-        @else
-            <div class="hero-image-placeholder">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-        @endif
+        <div class="hero-image-placeholder" style="background: rgba(96,165,250,0.10); border-radius: 25px; display: flex; align-items: center; justify-content: center; width: 350px; height: 350px; box-shadow: 0 0 60px rgba(96, 165, 250, 0.2), inset 0 0 40px rgba(96, 165, 250, 0.1); animation: float 3s ease-in-out infinite;">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" style="width: 250px; height: 250px; object-fit: contain; filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.4)); z-index:2;" />
+        </div>
     </div>
 </section>
 @endsection

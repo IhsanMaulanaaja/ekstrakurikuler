@@ -76,7 +76,7 @@
 
         /* SIDEBAR */
         .sidebar {
-            width: 200px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -376,7 +376,7 @@
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Siswa
                 </a>
-                <a class="nav-item active" href="{{ route('ekstrakurikuler.editKuota') }}">
+                <a class="nav-item active" href="{{ route('ekstrakurikuler.editKuota', $ekskul->id) }}">
                     <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
                     Atur Kuota
                 </a>
@@ -417,7 +417,7 @@
                 </div>
 
                 <!-- FORM -->
-                <form action="{{ route('ekstrakurikuler.updateKuota') }}" method="POST">
+                <form action="{{ route('ekstrakurikuler.updateKuota', $ekskul->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
