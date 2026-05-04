@@ -118,7 +118,7 @@
     .hero-image-placeholder i {
         position: relative;
         z-index: 2;
-        filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.4));
+        filter: drop-shadow(0 0 20px rgba(150, 193, 246, 0.4));
         animation: bounce 2s ease-in-out infinite;
     }
 

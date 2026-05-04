@@ -407,152 +407,66 @@
             gap: 8px;
         }
 
-        /* ===== EKSKUL SAYA ===== */
-        .ekskul-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        .ekskul-table,
+.pendaftaran-table,
+.nilai-table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        .ekskul-table td {
-            font-size: 13.5px;
-            color: #222;
-            padding: 4px 0;
-            vertical-align: middle;
-        }
+.ekskul-table td,
+.pendaftaran-table td,
+.nilai-table td {
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #222;
+}
 
-        .ek-name {
-            font-weight: 600;
-            min-width: 75px;
-        }
+/* biar isi sejajar dan gak loncat */
+.row-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
-        .ek-dash {
-            color: #888;
-            padding: 0 6px;
-        }
+/* dash */
+.dash {
+    color: #888;
+}
 
-        .ek-schedule {
-            color: #333;
-        }
+/* status */
+.status {
+    font-weight: 700;
+}
 
-        .ek-dash2 {
-            color: #888;
-            padding: 0 6px;
-        }
+/* badge */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
 
-        .ek-status {
-            font-weight: 800;
-            color: #1a1a1a;
-        }
+.badge-accepted {
+    background: #dcfce7;
+    color: #166534;
+}
 
-        /* ===== PENDAFTARAN STATUS ===== */
-        .pendaftaran-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.badge-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
 
-        .pendaftaran-table td {
-            font-size: 13.5px;
-            color: #222;
-            padding: 4px 0;
-            vertical-align: middle;
-        }
+/* nilai */
+.grade-a {
+    background: #dcfce7;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+}
 
-        .pend-ekskul {
-            font-weight: 600;
-            min-width: 100px;
-        }
-
-        .pend-dash {
-            color: #888;
-            padding: 0 6px;
-        }
-
-        .pend-status {
-            font-weight: 700;
-        }
-
-        .pend-reason {
-            color: #ef4444;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .badge-pending {
-            background: #fef3c7;
-            color: #b45309;
-        }
-
-        .badge-accepted {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .badge-rejected {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* ===== NILAI SISWA ===== */
-        .nilai-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .nilai-table td {
-            font-size: 13.5px;
-            color: #222;
-            padding: 4px 0;
-            vertical-align: middle;
-        }
-
-        .nilai-ekskul {
-            font-weight: 600;
-            min-width: 100px;
-        }
-
-        .nilai-dash {
-            color: #888;
-            padding: 0 6px;
-        }
-
-        .nilai-grade {
-            font-weight: 700;
-        }
-
-        .grade-a {
-            background: #dcfce7;
-            color: #166534;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 800;
-        }
-
-        .grade-b {
-            background: #dbeafe;
-            color: #1e40af;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 800;
-        }
-
-        .grade-c {
-            background: #fef3c7;
-            color: #b45309;
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 800;
-        }
 
         /* ===== TWO COL ===== */
         .two-col {
@@ -806,21 +720,20 @@
             <!-- Ekskul Saya -->
             <div class="card">
                 <div class="card-title">Ekskul Saya</div>
-                <table class="ekskul-table">
-                    @forelse ($ekskulSiswa as $ekskul)
-                    <tr>
-                        <td class="ek-name">{{ $ekskul->nama }}</td>
-                        <td class="ek-dash">—</td>
-                        <td class="ek-schedule">{{ $ekskul->jadwal_lengkap ?? 'Jadwal belum diatur' }}</td>
-                        <td class="ek-dash2">—</td>
-                        <td class="ek-status"><b>Aktif</b></td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" style="text-align: center; color: #777; padding: 10px;">Anda belum mengikuti ekskul mana pun.</td>
-                    </tr>
-                    @endforelse
-                </table>
+               <table class="ekskul-table">
+    <tr>
+        <td>
+            <div class="row-inline">
+                <strong>Futsal</strong>
+                <span class="dash">—</span>
+                <span>Sabtu 15:00, Selasa 15:30</span>
+                <span class="dash">—</span>
+                <span class="status">Aktif</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
             </div>
 
             <!-- Status Pendaftaran -->
@@ -828,32 +741,31 @@
             <div class="card">
                 <div class="card-title">Status Pendaftaran</div>
                 <table class="pendaftaran-table">
-                    @forelse ($statusPendaftaran as $pend)
-                    <tr>
-                        <td class="pend-ekskul">{{ $pend->ekskul->nama ?? 'N/A' }}</td>
-                        <td class="pend-dash">—</td>
-                        <td class="pend-status">
-                            @if($pend->status === 'menunggu')
-                                <span class="status-badge badge-pending">Menunggu</span>
-                            @elseif($pend->status === 'disetujui')
-                                <span class="status-badge badge-accepted">Disetujui</span>
-                            @elseif($pend->status === 'ditolak')
-                                <span class="status-badge badge-rejected">Ditolak</span>
-                            @endif
-                        </td>
-                        @if($pend->status === 'ditolak' && $pend->catatan_admin)
-                        <td class="pend-dash">—</td>
-                        <td class="pend-reason" title="{{ $pend->catatan_admin }}">
-                            {{ Str::limit($pend->catatan_admin, 30) }}
-                        </td>
-                        @endif
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" style="text-align: center; color: #777; padding: 10px;">Belum ada status pendaftaran.</td>
-                    </tr>
-                    @endforelse
-                </table>
+    <tr>
+        <td>
+            <div class="row-inline">
+                <strong>Futsal</strong>
+                <span class="dash">—</span>
+                <span class="status-badge badge-accepted">Disetujui</span>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="row-inline">
+                <strong>Basket</strong>
+                <span class="dash">—</span>
+                <span class="status-badge badge-rejected">Ditolak</span>
+                <span class="dash">—</span>
+                <span style="color:#ef4444; font-size:13px;">
+                    Kuota Basket Sudah Penuh
+                </span>
+            </div>
+        </td>
+    </tr>
+</table>
+
             </div>
             @endif
 
@@ -861,30 +773,22 @@
             @if(count($nilaiSiswa) > 0)
             <div class="card">
                 <div class="card-title"><span style="font-size:17px;">⭐</span> Nilai Saya</div>
-                <table class="nilai-table">
-                    @forelse ($nilaiSiswa as $nilai)
-                    <tr>
-                        <td class="nilai-ekskul">{{ $nilai->ekskul->nama ?? 'N/A' }}</td>
-                        <td class="nilai-dash">—</td>
-                        <td class="nilai-grade">
-                            @if($nilai->nilai === 'A')
-                                <span class="grade-a">A (Sangat Baik)</span>
-                            @elseif($nilai->nilai === 'B')
-                                <span class="grade-b">B (Baik)</span>
-                            @elseif($nilai->nilai === 'C')
-                                <span class="grade-c">C (Cukup)</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @if($nilai->keterangan)
-                    <tr>
-                        <td colspan="2"></td>
-                        <td style="font-size: 12px; color: #666; font-style: italic; padding-top: 2px;">{{ $nilai->keterangan }}</td>
-                    </tr>
-                    @endif
-                    @empty
-                    @endforelse
-                </table>
+              <table class="nilai-table">
+    <tr>
+        <td>
+            <div class="row-inline">
+                <strong>Futsal</strong>
+                <span class="dash">—</span>
+                <span class="grade-a">A (Sangat Baik)</span>
+            </div>
+
+            <div style="font-size:12px; color:#666; margin-top:5px;">
+                Siswa Sangat Baik Dan Disiplin
+            </div>
+        </td>
+    </tr>
+</table>
+
             </div>
             @endif
 

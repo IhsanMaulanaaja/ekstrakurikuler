@@ -33,9 +33,34 @@ class DashboardController extends Controller
         $jadwalRaw = '';
 
         if ($connection === 'sqlite') {
-            $jadwalRaw = "GROUP_CONCAT(jadwal_ekskul.hari || ' ' || strftime('%H:%M', jadwal_ekskul.jam_mulai), ', ') as jadwal_lengkap";
+            $jadwalRaw = "GROUP_CONCAT(
+                CASE jadwal_ekskul.hari
+                    WHEN 'senin' THEN 'Senin'
+                    WHEN 'selasa' THEN 'Selasa'
+                    WHEN 'rabu' THEN 'Rabu'
+                    WHEN 'kamis' THEN 'Kamis'
+                    WHEN 'jumat' THEN 'Jumat'
+                    WHEN 'sabtu' THEN 'Sabtu'
+                    WHEN 'minggu' THEN 'Minggu'
+                    ELSE jadwal_ekskul.hari
+                END || ' ' || strftime('%H:%M', jadwal_ekskul.jam_mulai), ', ') as jadwal_lengkap";
         } else {
-            $jadwalRaw = "GROUP_CONCAT(CONCAT(jadwal_ekskul.hari, ' ', TIME_FORMAT(jadwal_ekskul.jam_mulai, '%H:%i')) SEPARATOR ', ') as jadwal_lengkap";
+            $jadwalRaw = "GROUP_CONCAT(
+                CONCAT(
+                    CASE jadwal_ekskul.hari
+                        WHEN 'senin' THEN 'Senin'
+                        WHEN 'selasa' THEN 'Selasa'
+                        WHEN 'rabu' THEN 'Rabu'
+                        WHEN 'kamis' THEN 'Kamis'
+                        WHEN 'jumat' THEN 'Jumat'
+                        WHEN 'sabtu' THEN 'Sabtu'
+                        WHEN 'minggu' THEN 'Minggu'
+                        ELSE jadwal_ekskul.hari
+                    END,
+                    ' ',
+                    TIME_FORMAT(jadwal_ekskul.jam_mulai, '%H:%i')
+                )
+                SEPARATOR ', ') as jadwal_lengkap";
         }
 
         $ekskulSiswa = DB::table('anggota_ekskul')

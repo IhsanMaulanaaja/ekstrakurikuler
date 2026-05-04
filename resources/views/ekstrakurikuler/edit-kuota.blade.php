@@ -368,14 +368,6 @@
                     <span class="nav-icon"><i class="fas fa-home"></i></span>
                     Beranda
                 </a>
-                <a class="nav-item" href="{{ route('pendaftaran-ekskul') }}">
-                    <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span>
-                    Pendaftar
-                </a>
-                <a class="nav-item" href="{{ route('anggota-admin') }}">
-                    <span class="nav-icon"><i class="fas fa-users"></i></span>
-                    Kelola Siswa
-                </a>
                 <a class="nav-item active" href="{{ route('ekstrakurikuler.editKuota', $ekskul->id) }}">
                     <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
                     Atur Kuota
