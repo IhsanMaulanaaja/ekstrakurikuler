@@ -97,16 +97,19 @@
             flex: 1;
         }
 
-       .nav-item { 
-        display: flex; align-items: center; 
-        gap: 12px; padding: 11px 16px; 
-        border-radius: 10px; 
-        cursor: pointer; 
-        font-size: 15.5px; 
-        font-weight: 600; color: #1a1a2e; 
-        text-decoration: none; 
-        transition: background 0.15s; } 
-       
+       .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
        .nav-item:hover { 
             background: rgba(255, 255, 255, 0.35); 
         }

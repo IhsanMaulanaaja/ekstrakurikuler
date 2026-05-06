@@ -99,17 +99,6 @@
             overflow-y: auto;
         }
 
-        .sidebar-logo {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .sidebar-logo img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 8px;
-        }
-
         .sidebar-title {
             font-size: 14px;
             font-weight: 800;
@@ -127,7 +116,7 @@
         }
 
         .sidebar-nav {
-            width: 100%;
+            width: 100%;    
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -167,7 +156,7 @@
             flex-shrink: 0;
         }
 
-        .logout-container {
+        .logout-area {
             width: 100%;
             margin-top: 14px;
         }
@@ -359,7 +348,23 @@
         .user-avatar img {
             width: 100%;
             height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            max-width: 100px;
+            margin-bottom: 9px;
+        }
+
+        .sidebar-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
 
         .action-btns {

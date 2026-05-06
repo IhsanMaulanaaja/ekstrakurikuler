@@ -88,24 +88,24 @@
         }
 
         .sidebar-logo img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 8px;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 4px;
         }
 
         .sidebar-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 800;
             color: #1a1a1a;
-            margin-bottom: 14px;
             text-align: center;
+            margin-bottom: 14px;
             line-height: 1.35;
         }
 
         .sidebar-divider {
             width: 100%;
             height: 1px;
-            background: #608eb1;
+            background: rgba(0, 0, 0, 0.13);
             margin-bottom: 8px;
         }
 
@@ -114,11 +114,10 @@
             display: flex;
             flex-direction: column;
             gap: 2px;
-            padding: 0;
             flex: 1;
         }
 
-         .nav-item {
+        .nav-item {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -131,14 +130,51 @@
             text-decoration: none;
             transition: background 0.15s;
         }
+
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .nav-item.active {
             background: #ffffff;
             color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .nav-item .nav-icon {
+            width: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .logout-area {
+            width: 100%;
+            margin-top: 14px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: #e63946;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 15px;
             font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+
+        .logout-btn:hover {
+            background: #c1121f;
         }
 
         .main {
@@ -463,10 +499,10 @@
                 </a>
             </nav>
 
-            <div style="width: 100%; padding: 0 20px; margin-top: auto;">
+            <div class="logout-area">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="nav-item" style="width: 100%; background: #e63946; color: white; justify-content: center;">
+                    <button type="submit" class="logout-btn">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </form>
