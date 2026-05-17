@@ -32,6 +32,7 @@ class StudentRegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'nisn' => ['required', 'string', 'max:20', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'kelas_jurusan' => ['required', 'string', 'max:150'],
@@ -48,8 +49,10 @@ class StudentRegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'nisn' => $request->nisn,
             'password' => Hash::make($request->password),
             'role' => 'siswa',
+            'status' => 'pending',
             'nomor_telepon' => $request->nomor_telepon,
             'kelas' => $kelas,
             'alamat' => $request->alamat,
@@ -58,8 +61,6 @@ class StudentRegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard-siswa', absolute: false));
+        return redirect(route('register-success'))->with('status', 'Akun Anda telah dibuat dan sedang menunggu persetujuan admin. Silakan login setelah akun Anda disetujui.');
     }
 }

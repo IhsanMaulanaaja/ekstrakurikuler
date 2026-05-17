@@ -87,7 +87,7 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 165px;
+            width: 195px;
             background: #a8c4d8;
             display: flex;
             flex-direction: column;
@@ -375,6 +375,10 @@
                 <a class="nav-item" href="{{ route('dashboard-admin') }}">
                     <span class="nav-icon"><i class="fas fa-home"></i></span>
                     Beranda
+                </a>
+                <a class="nav-item" href="{{ route('user-approval.index') }}">
+                    <span class="nav-icon"><i class="fas fa-check-circle"></i></span>
+                    Persetujuan Akun
                 </a>
                 <a class="nav-item active" href="{{ route('users.index') }}">
                     <span class="nav-icon"><i class="fas fa-users"></i></span>

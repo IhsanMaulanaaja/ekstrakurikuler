@@ -189,7 +189,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
-      margin-bottom: 0;
+      margin-bottom: 18px;
     }
 
     .form-row .form-group {
@@ -457,6 +457,15 @@
               <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="email@school.com">
             </div>
             @error('email')<span class="error-text"><i class="fas fa-times-circle" style="margin-right: 4px;"></i>{{ $message }}</span>@enderror
+          </div>
+
+          <div class="form-group">
+            <label for="nisn"><i class="fas fa-id-card" style="margin-right: 6px;"></i>NISN</label>
+            <div class="input-wrapper">
+              <i class="fas fa-id-card"></i>
+              <input type="text" id="nisn" name="nisn" value="{{ old('nisn') }}" required placeholder="Nomor Induk Siswa Nasional">
+            </div>
+            @error('nisn')<span class="error-text"><i class="fas fa-times-circle" style="margin-right: 4px;"></i>{{ $message }}</span>@enderror
           </div>
         </div>
 

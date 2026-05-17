@@ -46,6 +46,14 @@ Route::get('/dashboard-pembina', [DashboardController::class, 'pembina'])->middl
 use App\Http\Controllers\UsersController;
 Route::resource('/users', UsersController::class)->middleware(['auth', 'verified']);
 
+// USER APPROVAL (FOR ADMIN)
+use App\Http\Controllers\UserApprovalController;
+Route::get('/user-approval', [UserApprovalController::class, 'index'])->middleware(['auth', 'verified'])->name('user-approval.index');
+Route::patch('/user-approval/{id}/approve', [UserApprovalController::class, 'approve'])->middleware(['auth', 'verified'])->name('user-approval.approve');
+Route::patch('/user-approval/{id}/reject', [UserApprovalController::class, 'reject'])->middleware(['auth', 'verified'])->name('user-approval.reject');
+Route::delete('/user-approval/{id}', [UserApprovalController::class, 'delete'])->middleware(['auth', 'verified'])->name('user-approval.delete');
+Route::get('/user-approval/{id}', [UserApprovalController::class, 'show'])->middleware(['auth', 'verified'])->name('user-approval.show');
+
 // PILIHAN EKSKUL
 use App\Http\Controllers\EkskulController;
 Route::get('/pilihan-ekskul', [EkskulController::class, 'pilihanEkskul'])->middleware(['auth', 'verified'])->name('pilihan-ekskul');

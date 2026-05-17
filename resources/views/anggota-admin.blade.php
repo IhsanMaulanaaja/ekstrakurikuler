@@ -593,6 +593,10 @@
                         <span class="nav-icon"><i class="fas fa-home"></i></span>
                         Beranda
                     </a>
+                    <a class="nav-item" href="{{ route('user-approval.index') }}">
+                        <span class="nav-icon"><i class="fas fa-check-circle"></i></span>
+                        Persetujuan Akun
+                    </a>
                     <a class="nav-item" href="{{ route('users.index') }}">
                         <span class="nav-icon"><i class="fas fa-users"></i></span>
                         Kelola Pengguna
@@ -668,6 +672,9 @@
                                 <th style="width: 25%;">Nama Siswa</th>
                                 <th style="width: 15%;">Kelas</th>
                                 <th style="width: 25%;">Email</th>
+                                @if(!$isAdmin && $ekskuls->count() > 1)
+                                    <th style="width: 18%;">Ekskul</th>
+                                @endif
                                 @if(!$isAdmin)
                                     <th style="width: 12%;">Status</th>
                                 @endif
@@ -699,6 +706,9 @@
                                             {{ $member->user->email }}
                                         @endif
                                     </td>
+                                    @if(!$isAdmin && $ekskuls->count() > 1)
+                                        <td>{{ $member->ekskul->nama ?? '-' }}</td>
+                                    @endif
                                     @if(!$isAdmin)
                                         <td>
                                             <span class="status-badge status-{{ str_replace(' ', '-', strtolower($member->status)) }}">

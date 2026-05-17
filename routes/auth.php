@@ -28,6 +28,10 @@ Route::middleware('guest')->group(function () {
         ->name('register-siswa');
     Route::post('register-siswa', [StudentRegisteredUserController::class, 'store']);
 
+    Route::get('register-success', function () {
+        return view('auth.register-success');
+    })->name('register-success');
+
     Route::get('register-admin', [AdminRegisteredUserController::class, 'create'])
         ->name('register-admin');
     Route::post('register-admin', [AdminRegisteredUserController::class, 'store']);

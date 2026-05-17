@@ -458,6 +458,11 @@
     color: #991b1b;
 }
 
+.badge-pending {
+    background: #fef9c3;
+    color: #92400e;
+}
+
 /* nilai */
 .grade-a {
     background: #dcfce7;
@@ -720,20 +725,29 @@
             <!-- Ekskul Saya -->
             <div class="card">
                 <div class="card-title">Ekskul Saya</div>
-               <table class="ekskul-table">
-    <tr>
-        <td>
-            <div class="row-inline">
-                <strong>Futsal</strong>
-                <span class="dash">—</span>
-                <span>Sabtu 15:00, Selasa 15:30</span>
-                <span class="dash">—</span>
-                <span class="status">Aktif</span>
-            </div>
-        </td>
-    </tr>
-</table>
-
+                <table class="ekskul-table">
+                    @forelse ($ekskulSiswa as $ekskul)
+                        <tr>
+                            <td>
+                                <div class="row-inline">
+                                    <strong>{{ $ekskul->nama }}</strong>
+                                    <span class="dash">—</span>
+                                    <span>{{ $ekskul->jadwal_lengkap ?: 'Jadwal belum tersedia' }}</span>
+                                    <span class="dash">—</span>
+                                    <span class="status">Aktif</span>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>
+                                <div class="row-inline" style="color: #666;">
+                                    Belum ada ekstrakurikuler yang sedang diikuti.
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </table>
             </div>
 
             <!-- Status Pendaftaran -->
@@ -741,31 +755,29 @@
             <div class="card">
                 <div class="card-title">Status Pendaftaran</div>
                 <table class="pendaftaran-table">
-    <tr>
-        <td>
-            <div class="row-inline">
-                <strong>Futsal</strong>
-                <span class="dash">—</span>
-                <span class="status-badge badge-accepted">Disetujui</span>
-            </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            <div class="row-inline">
-                <strong>Basket</strong>
-                <span class="dash">—</span>
-                <span class="status-badge badge-rejected">Ditolak</span>
-                <span class="dash">—</span>
-                <span style="color:#ef4444; font-size:13px;">
-                    Kuota Basket Sudah Penuh
-                </span>
-            </div>
-        </td>
-    </tr>
-</table>
-
+                    @foreach($statusPendaftaran as $pendaftaran)
+                        <tr>
+                            <td>
+                                <div class="row-inline" style="flex-wrap: wrap; gap: 8px;">
+                                    <strong>{{ $pendaftaran->ekskul->nama ?? 'Ekskul tidak ditemukan' }}</strong>
+                                    <span class="dash">—</span>
+                                    @php
+                                        $statusLabel = $pendaftaran->status;
+                                    @endphp
+                                    <span class="status-badge {{ $statusLabel === 'disetujui' ? 'badge-accepted' : ($statusLabel === 'ditolak' ? 'badge-rejected' : 'badge-pending') }}">
+                                        {{ ucfirst($statusLabel) }}
+                                    </span>
+                                    @if($pendaftaran->status === 'ditolak' && $pendaftaran->catatan_admin)
+                                        <span class="dash">—</span>
+                                        <span style="color:#ef4444; font-size:13px;">
+                                            {{ $pendaftaran->catatan_admin }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
             @endif
 
@@ -773,22 +785,19 @@
             @if(count($nilaiSiswa) > 0)
             <div class="card">
                 <div class="card-title"><span style="font-size:17px;">⭐</span> Nilai Saya</div>
-              <table class="nilai-table">
-    <tr>
-        <td>
-            <div class="row-inline">
-                <strong>Futsal</strong>
-                <span class="dash">—</span>
-                <span class="grade-a">A (Sangat Baik)</span>
-            </div>
-
-            <div style="font-size:12px; color:#666; margin-top:5px;">
-                Siswa Sangat Baik Dan Disiplin
-            </div>
-        </td>
-    </tr>
-</table>
-
+                <table class="nilai-table">
+                    @foreach($nilaiSiswa as $nilai)
+                        <tr>
+                            <td>
+                                <div class="row-inline">
+                                    <strong>{{ $nilai->ekskul->nama ?? $nilai->ekskul_name ?? 'Ekskul' }}</strong>
+                                    <span class="dash">—</span>
+                                    <span class="grade-a">{{ $nilai->nilai }}{{ $nilai->keterangan ? ' (' . $nilai->keterangan . ')' : '' }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
             @endif
 

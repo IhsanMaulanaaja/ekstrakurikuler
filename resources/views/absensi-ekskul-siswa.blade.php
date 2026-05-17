@@ -506,9 +506,6 @@
                             <div class="radio-item">
                                 <input type="radio" name="status" value="sakit"> Sakit
                             </div>
-                            <div class="radio-item">
-                                <input type="radio" name="status" value="alfa"> Alfa
-                            </div>
                         </div>
                     </div>
 

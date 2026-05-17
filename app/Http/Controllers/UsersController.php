@@ -15,7 +15,15 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        // Tampilkan semua non-siswa (admin, pembina) dan hanya siswa yang sudah disetujui
+        $users = User::where(function ($q) {
+                        $q->where('role', '!=', 'siswa')
+                          ->orWhere(function ($q2) {
+                              $q2->where('role', 'siswa')->where('status', 'approved');
+                          });
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
         return view('users.index', compact('users'));
     }
 

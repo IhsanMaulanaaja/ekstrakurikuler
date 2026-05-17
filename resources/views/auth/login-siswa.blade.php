@@ -282,10 +282,36 @@
       animation: shake 0.5s ease-in-out;
     }
 
+    .success-msg {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #86efac;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      animation: slideDown 0.5s ease-out;
+    }
+
+    .success-msg i {
+      margin-right: 8px;
+    }
+
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       25% { transform: translateX(-5px); }
       75% { transform: translateX(5px); }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .login-btn {
@@ -413,6 +439,13 @@
           @foreach ($errors->all() as $error)
             <div>{{ $error }}</div>
           @endforeach
+        </div>
+      @endif
+
+      @if (session('status'))
+        <div class="success-msg">
+          <i class="fas fa-check-circle"></i>
+          {{ session('status') }}
         </div>
       @endif
 

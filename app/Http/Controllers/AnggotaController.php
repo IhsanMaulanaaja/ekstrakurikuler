@@ -17,19 +17,18 @@ class AnggotaController extends Controller
         
         if ($user->role === 'pembina') {
             // Pembina hanya bisa melihat anggota dari ekskul yang mereka bina
-            $ekskulIds = Ekstrakurikuler::where('pembina_id', $user->id)->pluck('id');
-            // Get unique users only
-            $userIds = AnggotaEkskul::whereIn('ekskul_id', $ekskulIds)->distinct('user_id')->pluck('user_id');
+            $ekskuls = Ekstrakurikuler::where('pembina_id', $user->id)->get();
+            $ekskulIds = $ekskuls->pluck('id');
             $anggota = AnggotaEkskul::with('user', 'ekskul')
-                ->whereIn('user_id', $userIds)
-                ->groupBy('user_id')
+                ->whereIn('ekskul_id', $ekskulIds)
                 ->latest('id')
                 ->paginate(10);
-            $ekskuls = Ekstrakurikuler::where('pembina_id', $user->id)->get();
-            $ekskulName = $ekskuls->first()?->nama;
+            $ekskulName = $ekskuls->count() === 1 ? $ekskuls->first()->nama : null;
         } else {
-            // Admin melihat SEMUA siswa di sekolah (dari tabel users)
-            $semuaSiswa = User::where('role', 'siswa')->paginate(10);
+            // Admin melihat SEMUA siswa yang telah disetujui (status = approved)
+            $semuaSiswa = User::where('role', 'siswa')
+                              ->where('status', 'approved')
+                              ->paginate(10);
             $anggota = $semuaSiswa;
             $ekskuls = Ekstrakurikuler::all();
             $ekskulName = null;
@@ -78,7 +77,8 @@ class AnggotaController extends Controller
             }
         }
 
-        // Hapus juga record pendaftaran yang sesuai agar user bisa daftar lagi
+        // Hapus hanya record anggota ekskul, bukan akun User.
+        // Juga hapus pendaftaran terkait agar siswa bisa mendaftar lagi jika diperlukan.
         Pendaftaran::where('user_id', $anggota->user_id)
                     ->where('ekskul_id', $anggota->ekskul_id)
                     ->delete();

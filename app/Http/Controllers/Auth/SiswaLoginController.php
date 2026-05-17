@@ -37,6 +37,23 @@ class SiswaLoginController extends Controller
             ]);
         }
 
+        // Check if user account is approved
+        if ($user->status === 'pending') {
+            Auth::logout();
+
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => 'Akun Anda masih menunggu persetujuan admin. Silakan hubungi admin untuk konfirmasi.',
+            ]);
+        }
+
+        if ($user->status === 'rejected') {
+            Auth::logout();
+
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => 'Akun Anda telah ditolak. Silakan hubungi admin untuk informasi lebih lanjut.',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard-siswa', absolute: false));

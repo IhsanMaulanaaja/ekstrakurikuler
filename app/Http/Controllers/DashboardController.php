@@ -28,6 +28,16 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
+        if ($user?->role !== 'siswa') {
+            if ($user?->role === 'admin') {
+                return redirect()->route('dashboard-admin');
+            }
+            if ($user?->role === 'pembina') {
+                return redirect()->route('dashboard-pembina');
+            }
+            abort(403);
+        }
+
         // 1. Ambil Ekskul Saya (yang sudah join dan status aktif) + Gabungkan jadwalnya untuk tampilan tabel
         $connection = DB::getDriverName();
         $jadwalRaw = '';
@@ -177,6 +187,11 @@ class DashboardController extends Controller
 
     public function admin()
     {
+        $user = auth()->user();
+        if ($user?->role !== 'admin') {
+            abort(403);
+        }
+
         // 1. Stats Pendaftaran
         $totalPendaftar = DB::table('pendaftaran')->count();
         $totalDitolak = DB::table('pendaftaran')->where('status', 'ditolak')->count();

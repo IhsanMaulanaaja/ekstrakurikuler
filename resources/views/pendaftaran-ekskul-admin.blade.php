@@ -754,6 +754,10 @@
                     <span class="nav-icon"><i class="fas fa-home"></i></span>
                     Beranda
                 </a>
+                <a class="nav-item" href="{{ route('user-approval.index') }}">
+                    <span class="nav-icon"><i class="fas fa-check-circle"></i></span>
+                    Persetujuan Akun
+                </a>
                 <a class="nav-item" href="{{ route('users.index') }}">
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Kelola Pengguna
