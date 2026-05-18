@@ -13,7 +13,7 @@ class AbsensiSeeder extends Seeder
     public function run(): void
     {
         $members = \Illuminate\Support\Facades\DB::table('anggota_ekskul')->where('status', 'aktif')->get();
-        $statuses = ['hadir', 'izin', 'sakit', 'alfa'];
+        $statuses = ['hadir', 'izin', 'sakit', 'alpha'];
         
         foreach ($members as $m) {
             // Buat absensi untuk 5 tanggal terakhir (misal tiap jumat)

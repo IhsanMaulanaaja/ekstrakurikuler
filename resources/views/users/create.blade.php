@@ -510,6 +510,14 @@
                     <!-- Education Info -->
                     <div class="form-row-3 role-dependent" data-role-dependent style="{{ old('role') === 'siswa' ? '' : 'display:none;' }}">
                         <div class="form-group">
+                            <label class="form-label">NISN</label>
+                            <input type="text" name="nisn" value="{{ old('nisn') }}" 
+                                class="form-input" placeholder="Masukkan NISN" {{ old('role') === 'siswa' ? '' : 'disabled' }}>
+                            @error('nisn')
+                                <div class="form-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">Jurusan</label>
                             <input type="text" name="jurusan" value="{{ old('jurusan') }}" 
                                 class="form-input" placeholder="Contoh: RPL, TKJ" {{ old('role') === 'siswa' ? '' : 'disabled' }}>

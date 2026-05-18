@@ -35,15 +35,44 @@ class StudentRegisteredUserController extends Controller
             'nisn' => ['required', 'string', 'max:20', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'nomor_telepon' => ['required', 'string', 'max:20'],
-            'kelas_jurusan' => ['required', 'string', 'max:150'],
+            // kelas_jurusan must start with a Roman numeral (I..XII) followed by space and rest (e.g. "XI PPLG 1")
+            'kelas_jurusan' => ['required', 'string', 'max:150', 'regex:/^(?i)(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)\s+.+$/'],
             'alamat' => ['required', 'string'],
+        ], [
+            'kelas_jurusan.regex' => 'Format kelas harus diawali angka romawi (contoh: XI PPLG 1).'
         ]);
 
-        $kelas = $request->kelas_jurusan;
+        $inputKelas = trim($request->kelas_jurusan);
+        $kelas = $inputKelas;
         $jurusan = null;
 
-        if (str_contains($request->kelas_jurusan, '&')) {
-            [$kelas, $jurusan] = array_map('trim', explode('&', $request->kelas_jurusan, 2));
+        // If user used '&' separator, keep existing behavior but normalize jurusan
+        if (str_contains($inputKelas, '&')) {
+            [$left, $right] = array_map('trim', explode('&', $inputKelas, 2));
+            $kelas = $left;
+            $jurusan = strtoupper($right);
+        } else {
+            // Try to extract roman + jurusan pattern like: "XI PPLG 1"
+            if (preg_match('/^(?i)(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)\s+([A-Za-z]+)(?:\s+(.*))?$/i', $inputKelas, $m)) {
+                $roman = strtoupper($m[1]);
+                $candidate = strtoupper($m[2]);
+                $rest = isset($m[3]) ? trim($m[3]) : '';
+
+                $allowed = ['PPLG','TO','ANM','BCF','TPFL'];
+                if (in_array($candidate, $allowed, true)) {
+                    $jurusan = $candidate;
+                    // remove duplicate jurusan if it appears again in the rest (e.g. "1 BCF")
+                    if ($rest !== '') {
+                        $rest = preg_replace('/(\b' . preg_quote($candidate, '/') . '\b\s*$)|(\s*\b' . preg_quote($candidate, '/') . '\b\s*)/i', ' ', $rest);
+                        $rest = trim($rest);
+                    }
+                    // store kelas in the desired display order: ROMAN JURUSAN REST (e.g. "XI BCF 1")
+                    $kelas = $roman . ' ' . $candidate . ($rest !== '' ? ' ' . $rest : '');
+                } else {
+                    // If not an allowed jurusan, keep original but uppercase the roman part
+                    $kelas = $roman . ($rest !== '' ? ' ' . $candidate . ($rest !== '' ? ' ' . $rest : '') : ' ' . $candidate);
+                }
+            }
         }
 
         $user = User::create([

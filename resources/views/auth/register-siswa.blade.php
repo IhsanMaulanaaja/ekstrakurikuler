@@ -483,9 +483,11 @@
             <label for="kelas_jurusan"><i class="fas fa-book" style="margin-right: 6px;"></i>Kelas</label>
             <div class="input-wrapper">
               <i class="fas fa-book"></i>
-              <input type="text" id="kelas_jurusan" name="kelas_jurusan" value="{{ old('kelas_jurusan') }}" required placeholder="XI PPLG 1">
+              <input type="text" id="kelas_jurusan" name="kelas_jurusan" value="{{ old('kelas_jurusan') }}" required placeholder="XI PPLG 1"
+                     pattern="^(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)\s+.+$" title="Format mulai dengan angka romawi (contoh: XI PPLG 1)">
             </div>
-            <span class="form-hint">💡 Contoh: XI PPLG 1</span>
+            <span class="form-hint">— Awali dengan angka romawi & menggunakan huruf kapital. 
+              PPLG, BCF, ANM, TO, TPFL</span>
             @error('kelas_jurusan')<span class="error-text"><i class="fas fa-times-circle" style="margin-right: 4px;"></i>{{ $message }}</span>@enderror
           </div>
         </div>
@@ -539,5 +541,28 @@
       </div>
     </div>
   </div>
+  <script>
+    // Normalize the input: uppercase leading roman and known jurusan codes
+    (function(){
+      const kelasInput = document.getElementById('kelas_jurusan');
+      const allowed = ['PPLG','TO','ANM','BCF','TPFL'];
+      if(!kelasInput) return;
+      kelasInput.addEventListener('blur', function(){
+        let v = this.value.trim();
+        if(!v) return;
+        const parts = v.split(/\s+/);
+        // Uppercase roman part
+        parts[0] = parts[0].toUpperCase();
+        // If there's a second token and it's a known jurusan, uppercase it
+        if(parts.length > 1){
+          const candidate = parts[1].toUpperCase();
+          if(allowed.indexOf(candidate) !== -1){
+            parts[1] = candidate;
+          }
+        }
+        this.value = parts.join(' ');
+      });
+    })();
+  </script>
 </body>
 </html>

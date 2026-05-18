@@ -30,7 +30,7 @@ return new class extends Migration
                     $table->foreignId('user_id')->constrained()->onDelete('cascade');
                     $table->foreignId('ekskul_id')->constrained('ekstrakurikuler')->onDelete('cascade');
                     $table->date('tanggal');
-                    $table->enum('status', ['hadir', 'izin', 'sakit', 'alfa']);
+                    $table->enum('status', ['hadir', 'izin', 'sakit', 'alpha']);
                     $table->text('keterangan')->nullable();
                     $table->timestamps();
                     $table->unique(['user_id', 'ekskul_id', 'tanggal']);
@@ -45,7 +45,7 @@ return new class extends Migration
 
             DB::statement('PRAGMA foreign_keys=ON');
         } else {
-            DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'sakit', 'alfa') NOT NULL");
+            DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'sakit', 'alpha') NOT NULL");
         }
     }
 
@@ -64,7 +64,7 @@ return new class extends Migration
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
                 $table->foreignId('ekskul_id')->constrained('ekstrakurikuler')->onDelete('cascade');
                 $table->date('tanggal');
-                $table->enum('status', ['hadir', 'izin', 'alfa']);
+                $table->enum('status', ['hadir', 'izin', 'alpha']);
                 $table->text('keterangan')->nullable();
                 $table->timestamps();
                 $table->unique(['user_id', 'ekskul_id', 'tanggal']);
@@ -77,7 +77,7 @@ return new class extends Migration
             Schema::dropIfExists('absensi_old');
             DB::statement('PRAGMA foreign_keys=ON');
         } else {
-            DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'alfa') NOT NULL");
+            DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'alpha') NOT NULL");
         }
     }
 };

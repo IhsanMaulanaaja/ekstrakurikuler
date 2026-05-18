@@ -279,6 +279,136 @@
             vertical-align: middle;
         }
 
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #f4f7fb;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .user-avatar button {
+            border: none;
+            background: transparent;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.2s ease;
+        }
+
+        .user-avatar button:hover img {
+            transform: scale(1.05);
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .user-name {
+            color: #3a7bd5;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 230px;
+        }
+
+        .user-nisn {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .image-preview-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-preview-modal.active {
+            display: flex;
+        }
+
+        .image-preview-card {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #111;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-preview-card img {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+            background: #111;
+            display: block;
+        }
+
+        .image-preview-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: background 0.15s ease;
+        }
+
+        .image-preview-close:hover {
+            background: rgba(255, 255, 255, 0.32);
+        }
+
+        .image-preview-caption {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            right: 16px;
+            color: #f8fafc;
+            font-size: 13px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 14px;
+            border-radius: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .users-table tr:last-child td {
             border-bottom: none;
         }
@@ -623,9 +753,21 @@
                             <tr>
                                 <td>{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
                                 <td>
-                                    <a href="{{ route('users.show', $user->id) }}" style="color: #3a7bd5; text-decoration: none; font-weight: 600;">
-                                        {{ $user->name }}
-                                    </a>
+                                    <div class="user-row">
+                                        <div class="user-avatar">
+                                            <button type="button" onclick="openImageModal({{ json_encode($user->foto_url ?? asset('assets/siswa.png')) }}, {{ json_encode($user->name) }})">
+                                                <img src="{{ $user->foto_url ?? asset('assets/siswa.png') }}" alt="Foto Profil {{ $user->name }}">
+                                            </button>
+                                        </div>
+                                        <div class="user-meta">
+                                            <a href="{{ route('users.show', $user->id) }}" class="user-name">
+                                                {{ $user->name }}
+                                            </a>
+                                            @if($user->role === 'siswa')
+                                                <span class="user-nisn">NISN: {{ $user->nisn ?? '-' }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>{{ $user->email }}</td>
                                 <td>
@@ -674,6 +816,33 @@
             @endif
         </main>
     </div>
+
+    <div class="image-preview-modal" id="imagePreviewModal" onclick="closeImageModal(event)">
+        <div class="image-preview-card">
+            <button type="button" class="image-preview-close" onclick="closeImageModal(event)">×</button>
+            <img src="" alt="Preview Foto" id="previewImage">
+            <div class="image-preview-caption" id="previewCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        function openImageModal(src, caption) {
+            const modal = document.getElementById('imagePreviewModal');
+            const image = document.getElementById('previewImage');
+            const captionEl = document.getElementById('previewCaption');
+
+            image.src = src;
+            image.alt = `Foto profil ${caption}`;
+            captionEl.textContent = caption;
+            modal.classList.add('active');
+        }
+
+        function closeImageModal(event) {
+            if (event.target.id === 'imagePreviewModal' || event.target.classList.contains('image-preview-close')) {
+                document.getElementById('imagePreviewModal').classList.remove('active');
+            }
+        }
+    </script>
 </body>
 
 </html>

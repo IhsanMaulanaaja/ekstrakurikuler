@@ -253,7 +253,16 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->nisn ?? '-' }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->kelas ?? '-' }}</td>
+                                @php
+                                    $displayKelas = $user->kelas ?? '';
+                                    if ($user->jurusan) {
+                                        // only append jurusan if it's not already present in kelas
+                                        if (stripos($displayKelas, $user->jurusan) === false) {
+                                            $displayKelas = trim($displayKelas . ' ' . $user->jurusan);
+                                        }
+                                    }
+                                @endphp
+                                <td>{{ $displayKelas ?: '-' }}</td>
                                 <td>{{ $user->created_at->translatedFormat('d M Y H:i') }}</td>
 
                                 <td>
@@ -356,7 +365,15 @@
                             <tr>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->kelas ?? '-' }}</td>
+                                @php
+                                    $displayKelas = $user->kelas ?? '';
+                                    if ($user->jurusan) {
+                                        if (stripos($displayKelas, $user->jurusan) === false) {
+                                            $displayKelas = trim($displayKelas . ' ' . $user->jurusan);
+                                        }
+                                    }
+                                @endphp
+                                <td>{{ $displayKelas ?: '-' }}</td>
                                 <td>{{ $user->updated_at->translatedFormat('d M Y') }}</td>
 
                                <td>

@@ -74,6 +74,7 @@ Route::get('/absensi-ekskul', [AbsensiController::class, 'index'])->middleware([
 Route::put('/absensi-ekskul/{id}', [AbsensiController::class, 'update'])->middleware(['auth', 'verified'])->name('absensi.update');
 Route::get('/absensi-siswa', [AbsensiController::class, 'siswa'])->middleware(['auth', 'verified'])->name('absensi-siswa');
 Route::post('/absensi-siswa', [AbsensiController::class, 'storeSiswa'])->middleware(['auth', 'verified'])->name('absensi-siswa.store');
+Route::get('/absensi-siswa/rekap', [AbsensiController::class, 'rekap'])->middleware(['auth', 'verified'])->name('absensi.rekap');
 
 // ANGGOTA EKSKUL
 use App\Http\Controllers\AnggotaController;

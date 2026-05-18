@@ -297,6 +297,11 @@
                     <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
                     Absensi Ekskul
                 </a>
+                 <a class="nav-item {{ request()->routeIs('absensi.rekap') ? 'active' : '' }}"
+                    href="{{ route('absensi.rekap') }}">
+                    <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+                    Rekap Absensi
+                </a>
                 <a class="nav-item {{ request()->routeIs('prestasi-siswa') ? 'active' : '' }}"
                     href="{{ route('prestasi-siswa') }}">
                     <span class="nav-icon"><i class="fas fa-medal"></i></span>

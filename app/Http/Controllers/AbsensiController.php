@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Absensi;
 use App\Models\Ekstrakurikuler;
 use App\Models\AnggotaEkskul;
+use App\Services\AttendanceService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -85,7 +86,7 @@ class AbsensiController extends Controller
         }
         
         $request->validate([
-            'status' => 'required|in:hadir,izin,sakit,alfa',
+            'status' => 'required|in:hadir,izin,sakit,alpha',
             'keterangan' => 'nullable|string'
         ]);
 
@@ -114,6 +115,8 @@ class AbsensiController extends Controller
                     'error' => 'User tidak terlogin'
                 ]);
             }
+
+            app(AttendanceService::class)->markMissingScheduleAttendanceAsAlpha($user);
             
             // Ambil daftar ekskul yang diikuti oleh siswa
             $ekskulDikuti = DB::table('anggota_ekskul')
@@ -170,13 +173,58 @@ class AbsensiController extends Controller
         }
     }
 
+    public function rekap(Request $request)
+    {
+        $user = auth()->user();
+        if (! $user || $user->role !== 'siswa') {
+            abort(403);
+        }
+
+        $selectedPeriod = $request->query('period', Carbon::now()->format('Y-m'));
+        try {
+            $selectedDate = Carbon::createFromFormat('Y-m', $selectedPeriod)->startOfMonth();
+        } catch (\Exception $e) {
+            $selectedDate = Carbon::now()->startOfMonth();
+            $selectedPeriod = $selectedDate->format('Y-m');
+        }
+
+        $month = $selectedDate->month;
+        $year = $selectedDate->year;
+
+        $absensiList = Absensi::with('ekskul')
+            ->where('user_id', $user->id)
+            ->whereMonth('tanggal', $month)
+            ->whereYear('tanggal', $year)
+            ->orderByDesc('tanggal')
+            ->get();
+
+        $summary = $absensiList->groupBy('status')->map->count();
+        $rekapAbsensi = [
+            'hadir' => $summary->get('hadir', 0),
+            'izin' => $summary->get('izin', 0),
+            'sakit' => $summary->get('sakit', 0),
+            'alpha' => $summary->get('alpha', $summary->get('alfa', 0)),
+        ];
+
+        $monthOptions = collect();
+        for ($i = 0; $i < 12; $i++) {
+            $date = Carbon::now()->subMonths($i);
+            $monthOptions->push([ 
+                'value' => $date->format('Y-m'),
+                'label' => $date->locale('id')->isoFormat('MMMM YYYY'),
+            ]);
+        }
+
+        return view('absensi-rekap-siswa', compact('absensiList', 'rekapAbsensi', 'selectedPeriod', 'monthOptions'));
+    }
+
     public function storeSiswa(Request $request)
     {
         $user = auth()->user();
 
         $request->validate([
             'ekskul_id' => 'required|exists:ekstrakurikuler,id',
-            'status' => 'required|in:hadir,izin,sakit,alfa',
+            'status' => 'required|in:hadir,izin,sakit,alpha',
             'keterangan' => 'nullable|string',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',

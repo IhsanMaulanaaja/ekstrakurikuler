@@ -342,6 +342,141 @@
             background: #7aba7a;
         }
 
+        .attendance-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .summary-item {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 96px;
+            justify-content: center;
+        }
+
+        .summary-item .summary-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-item .summary-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: #111;
+        }
+
+        .summary-item.hadir {
+            border-left: 4px solid #16a34a;
+        }
+
+        .summary-item.izin {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .summary-item.sakit {
+            border-left: 4px solid #ef4444;
+        }
+
+       .summary-item.alpha{
+    border-left: 4px solid #6b7280 !important;
+    padding-left: 12px;
+}
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .filter-row label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .filter-row select,
+        .filter-row button {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-size: 14px;
+        }
+
+        .filter-row button {
+            background: #3a7bd5;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .filter-row button:hover {
+            background: #285eaa;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .attendance-table th {
+            font-weight: 700;
+            color: #555;
+            background: #f8fafc;
+        }
+
+        .attendance-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .status-pill.hadir {
+            background: #16a34a;
+        }
+
+        .status-pill.izin {
+            background: #f59e0b;
+        }
+
+        .status-pill.sakit {
+            background: #ef4444;
+        }
+
+       .status-pill.alpha{
+    background:#6b7280 !important;
+    color:#ffffff !important;
+}
+
         .cal-box {
             background: #fff;
             border-radius: 7px;
@@ -738,6 +873,11 @@
                     <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
                     Absensi Ekskul
                 </a>
+                <a class="nav-item {{ request()->routeIs('absensi.rekap') ? 'active' : '' }}"
+                    href="{{ route('absensi.rekap') }}">
+                    <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+                    Rekap Absensi
+                </a>
                 <a class="nav-item {{ request()->routeIs('prestasi-siswa') ? 'active' : '' }}"
                     href="{{ route('prestasi-siswa') }}">
                     <span class="nav-icon"><i class="fas fa-medal"></i></span>
@@ -805,7 +945,7 @@
                         <div class="cal-num">{{ $tanggalHariIni }}</div>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-label">Kegiatan Bulan ini</div>
+                        <div class="stat-label">Kegiatan {{ \Carbon\Carbon::createFromFormat('Y-m', $selectedPeriod)->locale('id')->isoFormat('MMMM') }}</div>
                         <div class="stat-number">{{ $jumlahKegiatan }}</div>
                     </div>
                 </div>
@@ -818,6 +958,67 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span style="font-size:17px;">📋</span> Rekap Absensi {{ \Carbon\Carbon::createFromFormat('Y-m', $selectedPeriod)->locale('id')->isoFormat('MMMM YYYY') }}</div>
+                <form method="GET" class="filter-row" action="{{ route('dashboard-siswa') }}">
+                    <label for="dashboard-period">Pilih Bulan</label>
+                    <select id="dashboard-period" name="period">
+                        @foreach($monthOptions as $option)
+                            <option value="{{ $option['value'] }}" {{ $selectedPeriod === $option['value'] ? 'selected' : '' }}>
+                                {{ $option['label'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit">Ubah</button>
+                </form>
+                <div class="attendance-summary">
+                    <div class="summary-item hadir">
+                        <div class="summary-label">Hadir</div>
+                        <div class="summary-number">{{ $absensiRekap['hadir'] }}</div>
+                    </div>
+                    <div class="summary-item izin">
+                        <div class="summary-label">Izin</div>
+                        <div class="summary-number">{{ $absensiRekap['izin'] }}</div>
+                    </div>
+                    <div class="summary-item sakit">
+                        <div class="summary-label">Sakit</div>
+                        <div class="summary-number">{{ $absensiRekap['sakit'] }}</div>
+                    </div>
+                    <div class="summary-item alpha">
+                        <div class="summary-label">Alpha</div>
+                        <div class="summary-number">{{ $absensiRekap['alpha'] }}</div>
+                    </div>
+                </div>
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Ekskul</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($rekapAbsensiTerakhir as $absensi)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->locale('id')->isoFormat('DD MMM YYYY') }}</td>
+                                <td>{{ $absensi->ekskul->nama ?? '-' }}</td>
+                                <td>
+    <span class="status-pill {{ strtolower($absensi->status) == 'alfa' ? 'alpha' : strtolower($absensi->status) }}">
+        {{ strtolower($absensi->status) == 'alfa' ? 'Alpha' : ucfirst($absensi->status) }}
+    </span>
+</td>
+                                <td>{{ $absensi->keterangan ?? '-' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="empty-state">Belum ada absensi untuk periode ini.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
 
             <!-- Ekskul Saya -->

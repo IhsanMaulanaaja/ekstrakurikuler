@@ -828,7 +828,7 @@
                         <option value="hadir" {{ request('status') === 'hadir' ? 'selected' : '' }}>Hadir</option>
                         <option value="izin" {{ request('status') === 'izin' ? 'selected' : '' }}>Izin</option>
                         <option value="sakit" {{ request('status') === 'sakit' ? 'selected' : '' }}>Sakit</option>
-                        <option value="alfa" {{ request('status') === 'alfa' ? 'selected' : '' }}>Alpha</option>
+                        <option value="alpha" {{ request('status') === 'alpha' ? 'selected' : '' }}>Alpha</option>
                     </select>
                     <button type="submit" class="btn-save" style="padding: 6px 16px;">Filter</button>
                     <a href="{{ route('absensi-admin') }}" class="btn-cancel" style="padding: 6px 16px; text-decoration: none; display: inline-block;">Reset</a>
@@ -871,6 +871,7 @@
                                     <th>Kelas</th>
                                     <th>Status</th>
                                     <th>Keterangan</th>
+                                    <th>Waktu</th>
                                     <th>Lokasi</th>
                                     @if($user?->role === 'pembina')
                                     <th>Aksi</th>
@@ -895,6 +896,9 @@
                                             @endif
                                         </td>
                                         <td>{{ $absensi->keterangan ?? '-' }}</td>
+                                        <td>
+                                            {{ $absensi->gps_timestamp ? \Carbon\Carbon::parse($absensi->gps_timestamp)->format('H:i:s') : \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}
+                                        </td>
                                         <td>
                                             @if ($absensi->latitude && $absensi->longitude)
                                                 <button type="button" class="btn-lokasi" 
@@ -970,7 +974,7 @@
                         <option value="hadir">Hadir</option>
                         <option value="izin">Izin</option>
                         <option value="sakit">Sakit</option>
-                        <option value="alfa">Alpha</option>
+                        <option value="alpha">Alpha</option>
                     </select>
                 </div>
                 <div class="form-group-modal">

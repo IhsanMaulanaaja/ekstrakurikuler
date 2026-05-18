@@ -512,6 +512,14 @@
                     <!-- Education Info -->
                     <div class="form-row-3 role-dependent" data-role-dependent style="{{ old('role', $user->role) === 'siswa' ? '' : 'display:none;' }}">
                         <div class="form-group">
+                            <label class="form-label">NISN</label>
+                            <input type="text" name="nisn" value="{{ old('nisn', $user->nisn) }}" 
+                                class="form-input" placeholder="Masukkan NISN" {{ old('role', $user->role) === 'siswa' ? '' : 'disabled' }}>
+                            @error('nisn')
+                                <div class="form-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">Kelas</label>
                             <input type="text" name="kelas" value="{{ old('kelas', $user->kelas) }}" 
                                 class="form-input" placeholder="Contoh: XI PPLG 1" {{ old('role', $user->role) === 'siswa' ? '' : 'disabled' }}>

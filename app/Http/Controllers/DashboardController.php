@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Absensi;
 use App\Models\Ekstrakurikuler;
 use App\Models\Pendaftaran;
+use App\Services\AttendanceService;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -37,6 +39,9 @@ class DashboardController extends Controller
             }
             abort(403);
         }
+
+        // Pastikan absensi otomatis untuk jadwal kemarin tercatat sebagai Alpha jika belum ada.
+        app(AttendanceService::class)->markMissingScheduleAttendanceAsAlpha($user);
 
         // 1. Ambil Ekskul Saya (yang sudah join dan status aktif) + Gabungkan jadwalnya untuk tampilan tabel
         $connection = DB::getDriverName();
@@ -117,16 +122,56 @@ class DashboardController extends Controller
             });
         }
 
-        // 3. Kegiatan Bulan Ini (berdasarkan data Absensi)
-        $bulanSekarang = Carbon::now()->month;
-        $tahunSekarang = Carbon::now()->year;
+        $selectedPeriod = request()->query('period', Carbon::now()->format('Y-m'));
+        try {
+            $selectedDate = Carbon::createFromFormat('Y-m', $selectedPeriod)->startOfMonth();
+        } catch (\Exception $e) {
+            $selectedDate = Carbon::now()->startOfMonth();
+            $selectedPeriod = $selectedDate->format('Y-m');
+        }
+
+        $bulanSekarang = $selectedDate->month;
+        $tahunSekarang = $selectedDate->year;
         $jumlahKegiatan = DB::table('absensi')
             ->where('user_id', $user->id)
             ->whereMonth('tanggal', $bulanSekarang)
             ->whereYear('tanggal', $tahunSekarang)
             ->count();
 
-        // 4. Data tanggal untuk tampilan widget
+        // 4. Rekap Absensi Bulan Terpilih
+        $absensiBulanIni = DB::table('absensi')
+            ->where('user_id', $user->id)
+            ->whereMonth('tanggal', $bulanSekarang)
+            ->whereYear('tanggal', $tahunSekarang)
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $absensiRekap = [
+            'hadir' => $absensiBulanIni->get('hadir', 0),
+            'izin' => $absensiBulanIni->get('izin', 0),
+            'sakit' => $absensiBulanIni->get('sakit', 0),
+            'alpha' => $absensiBulanIni->get('alpha', $absensiBulanIni->get('alfa', 0)),
+        ];
+
+        $rekapAbsensiTerakhir = Absensi::with('ekskul')
+            ->where('user_id', $user->id)
+            ->whereMonth('tanggal', $bulanSekarang)
+            ->whereYear('tanggal', $tahunSekarang)
+            ->orderByDesc('tanggal')
+            ->limit(5)
+            ->get();
+
+        $monthOptions = collect();
+        for ($i = 0; $i < 12; $i++) {
+            $date = Carbon::now()->subMonths($i);
+            $monthOptions->push([
+                'value' => $date->format('Y-m'),
+                'label' => $date->locale('id')->isoFormat('MMMM YYYY'),
+            ]);
+        }
+
+        // 5. Data tanggal untuk tampilan widget
         $today = Carbon::now();
         $namaBulanShort = strtoupper($today->locale('id')->isoFormat('MMM'));
         $tanggalHariIni = $today->day;
@@ -181,7 +226,11 @@ class DashboardController extends Controller
             'jumlahPrestasi',
             'pengumuman',
             'statusPendaftaran',
-            'nilaiSiswa'
+            'nilaiSiswa',
+            'absensiRekap',
+            'rekapAbsensiTerakhir',
+            'selectedPeriod',
+            'monthOptions'
         ));
     }
 

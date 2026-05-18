@@ -283,6 +283,132 @@
         .student-name {
             font-weight: 700;
             color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .student-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .student-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f8fafc;
+            display: grid;
+            place-items: center;
+        }
+
+        .student-avatar button {
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .student-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+            display: block;
+        }
+
+        .student-avatar button:hover img {
+            transform: scale(1.05);
+        }
+
+        .student-meta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .image-preview-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-preview-modal.active {
+            display: flex;
+        }
+
+        .image-preview-card {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #111;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-preview-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 80vh;
+            object-fit: contain;
+            background: #111;
+        }
+
+        .image-preview-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: background 0.15s ease;
+        }
+
+        .image-preview-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .image-preview-caption {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            color: #f8fafc;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: calc(100% - 64px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .student-nisn {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
         }
 
         .status-badge {
@@ -685,12 +811,27 @@
                             @foreach($anggota as $member)
                                 <tr>
                                     <td>{{ ($anggota->currentPage() - 1) * $anggota->perPage() + $loop->iteration }}</td>
-                                    <td class="student-name">
-                                        @if($isAdmin)
-                                            {{ $member->name }}
-                                        @else
-                                            {{ $member->user->name }}
-                                        @endif
+                                    <td>
+                                        <div class="student-card">
+                                            <div class="student-avatar">
+                                                <button type="button" onclick="openImageModal({{ json_encode($isAdmin ? ($member->foto_url ?? asset('assets/siswa.png')) : ($member->user->foto_url ?? asset('assets/siswa.png'))) }}, {{ json_encode($isAdmin ? $member->name : $member->user->name) }})">
+                                                    <img src="{{ $isAdmin ? ($member->foto_url ?? asset('assets/siswa.png')) : ($member->user->foto_url ?? asset('assets/siswa.png')) }}"
+                                                        alt="Foto Profil {{ $isAdmin ? $member->name : $member->user->name }}">
+                                                </button>
+                                            </div>
+                                            <div class="student-meta">
+                                                <div class="student-name">
+                                                    @if($isAdmin)
+                                                        {{ $member->name }}
+                                                    @else
+                                                        {{ $member->user->name }}
+                                                    @endif
+                                                </div>
+                                                <div class="student-nisn">
+                                                    NISN: {{ $isAdmin ? ($member->nisn ?? '-') : ($member->user->nisn ?? '-') }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         @if($isAdmin)
@@ -817,6 +958,15 @@
         </form>
     </div>
 
+    <!-- IMAGE PREVIEW MODAL -->
+    <div class="image-preview-modal" id="imagePreviewModal" onclick="closeImageModal(event)">
+        <div class="image-preview-card">
+            <button type="button" class="image-preview-close" onclick="closeImageModal(event)">×</button>
+            <img src="" alt="Preview Foto" id="previewImage">
+            <div class="image-preview-caption" id="previewCaption"></div>
+        </div>
+    </div>
+
     <script>
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
@@ -824,6 +974,24 @@
 
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
+        }
+
+        function openImageModal(src, caption) {
+            const modal = document.getElementById('imagePreviewModal');
+            const image = document.getElementById('previewImage');
+            const captionEl = document.getElementById('previewCaption');
+
+            image.src = src;
+            image.alt = `Preview foto ${caption}`;
+            captionEl.textContent = caption;
+            modal.classList.add('active');
+        }
+
+        function closeImageModal(event) {
+            if (event.target.id === 'imagePreviewModal' || event.target.classList.contains('image-preview-close')) {
+                const modal = document.getElementById('imagePreviewModal');
+                modal.classList.remove('active');
+            }
         }
 
         function openEditModal(id, status) {
