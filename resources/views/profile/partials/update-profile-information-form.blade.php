@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -27,6 +27,32 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        </div>
+
+        <div class="space-y-4">
+            <x-input-label for="foto" :value="__('Profile Photo')" />
+
+            @if ($user->foto)
+                <div class="flex items-center gap-4">
+                    <img src="{{ $user->foto_url }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full object-cover border border-gray-200" />
+                    <div class="space-y-2">
+                        <a href="{{ $user->foto_url }}" target="_blank" rel="noopener noreferrer" class="inline-block px-3 py-2 bg-slate-100 text-slate-800 border border-slate-300 rounded-lg hover:bg-slate-200">
+                            {{ __('View Full Size') }}
+                        </a>
+                        <a href="{{ route('profile.foto.download') }}" class="inline-block px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                            {{ __('Download Photo') }}
+                        </a>
+                    </div>
+                </div>
+            @else
+                <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-sm text-gray-500 border border-gray-200">
+                    {{ __('No Photo') }}
+                </div>
+            @endif
+
+            <input id="foto" name="foto" type="file" accept="image/*" class="block w-full text-sm text-gray-900 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:border-indigo-500" />
+            <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+        </div>
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
@@ -45,7 +71,6 @@
                     @endif
                 </div>
             @endif
-        </div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

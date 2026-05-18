@@ -28,6 +28,11 @@ class User extends Authenticatable
         'alamat',
         'jurusan',
         'kelas',
+        'foto',
+    ];
+
+    protected $appends = [
+        'foto_url',
     ];
 
     /**
@@ -66,5 +71,21 @@ class User extends Authenticatable
     public function ekskulBinaan()
     {
         return $this->hasMany(Ekstrakurikuler::class, 'pembina_id');
+    }
+
+    public function getFotoUrlAttribute(): ?string
+    {
+        if (! $this->foto) {
+            return null;
+        }
+
+        $foto = ltrim($this->foto, '/');
+
+        if (str_starts_with($foto, 'http://') || str_starts_with($foto, 'https://')) {
+            return $foto;
+        }
+
+        // Return a root-relative path so image loads regardless of APP_URL
+        return '/storage/' . $foto;
     }
 }

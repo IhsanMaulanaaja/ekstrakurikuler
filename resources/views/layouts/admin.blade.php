@@ -445,8 +445,8 @@
         </div>
         <div class="topnav-right">
             <div class="bell-icon"><i class="fas fa-bell"></i></div>
-            <button class="user-btn">{{ Auth::user()->name ?? 'Theo' }} <i class="fas fa-chevron-down"
-                    style="font-size:13px;"></i></button>
+            <a href="{{ route('profile.edit') }}" class="user-btn">{{ Auth::user()->name ?? 'Theo' }} <i class="fas fa-chevron-down"
+                    style="font-size:13px;"></i></a>
         </div>
     </nav>
 

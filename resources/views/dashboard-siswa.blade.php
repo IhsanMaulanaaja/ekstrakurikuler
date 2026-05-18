@@ -268,6 +268,14 @@
             border: 2px solid #aaa;
         }
 
+          .avatar-circle img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
         .welcome-top {
             display: flex;
             align-items: center;
@@ -605,7 +613,87 @@
                 padding: 10px 14px;
                 font-size: 14px;
             }
-        }    </style>
+        }    
+        
+        /* ================= PROFILE IMAGE ================= */
+
+.profile-photo{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    object-fit:cover;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.profile-photo:hover{
+    transform:scale(1.08);
+    opacity:0.9;
+}
+
+/* ================= IMAGE MODAL ================= */
+
+.image-modal{
+    display:none;
+    position:fixed;
+    z-index:9999;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.88);
+    backdrop-filter:blur(6px);
+
+    justify-content:center;
+    align-items:center;
+
+    animation:fadeIn 0.2s ease;
+}
+
+.modal-image{
+    max-width:90%;
+    max-height:85%;
+    border-radius:18px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+    animation:zoomIn 0.25s ease;
+}
+
+.close-modal{
+    position:absolute;
+    top:20px;
+    right:35px;
+    color:white;
+    font-size:42px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ANIMATION */
+
+@keyframes zoomIn{
+    from{
+        transform:scale(0.8);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+    }
+    to{
+        opacity:1;
+    }
+}
+        
+        
+    </style>
+
 </head>
 
 <body>
@@ -619,8 +707,8 @@
         </div>
         <div class="topnav-right">
             <div class="bell-icon"><i class="fas fa-bell"></i></div>
-            <button class="user-btn">{{ Auth::user()->name ?? 'Siswa' }} <i class="fas fa-chevron-down"
-                    style="font-size:13px;"></i></button>
+            <a href="{{ route('profile.edit') }}" class="user-btn">{{ Auth::user()->name ?? 'Siswa' }} <i class="fas fa-chevron-down"
+                    style="font-size:13px;"></i></a>
         </div>
     </nav>
 
@@ -671,11 +759,21 @@
         <!-- MAIN -->
         <main class="main">
 
-            <!-- Welcome -->
-            <div class="welcome-card">
-                <div class="avatar-circle">
-                    <i class="fas fa-user"></i>
-                </div>
+          
+           <!-- WELCOME -->
+                <div class="welcome-card">
+                    <div class="avatar-circle">
+                    @if(Auth::user() && Auth::user()->foto_url)
+                <img 
+                    src="{{ Auth::user()->foto_url }}" 
+                    alt="{{ Auth::user()->name }}"
+                    class="profile-photo"
+                    onclick="openImage(this.src)"
+                    >
+             @else
+        <i class="fas fa-user"></i>
+    @endif
+</div>  
                 <div>
                     <div class="welcome-top">
                         <h2>Halo {{ Auth::user()->name }}!</h2>
@@ -830,8 +928,35 @@
             </div>
 
 
-        </main>
+                </main>
+
     </div>
+
+    <!-- IMAGE MODAL -->
+    <div id="imageModal" class="image-modal" onclick="closeImage()">
+
+        <span class="close-modal">&times;</span>
+
+        <img id="modalImage" class="modal-image">
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+    function openImage(src){
+        document.getElementById('imageModal').style.display = 'flex';
+        document.getElementById('modalImage').src = src;
+    }
+
+    function closeImage(){
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+    </script>
+
+</body>
+</html>
 
 </body>
 

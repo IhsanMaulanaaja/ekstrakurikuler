@@ -8,7 +8,13 @@
 
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.5/tailwind.min.css" rel="stylesheet">
+
+    @if (file_exists(public_path('build/manifest.json')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.5/tailwind.min.css" rel="stylesheet">
+        <script defer src="https://unpkg.com/alpinejs@3.4.2/dist/cdn.min.js"></script>
+    @endif
 
     <style>
         * {
@@ -168,19 +174,42 @@
         <a href="{{ route('landing') }}" class="nav-brand">
             <i class="fas fa-graduation-cap"></i> Ekstrakurikuler
         </a>
-        <ul class="nav-menu">
-            <li><a href="{{ route('landing') }}" class="{{ Request::routeIs('landing') ? 'active' : '' }}">Beranda</a></li>
-            <li><a href="{{ route('tentang') }}" class="{{ Request::routeIs('tentang') ? 'active' : '' }}">Tentang</a></li>
-            <li><a href="{{ route('prestasi') }}" class="{{ Request::routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
-            <li><a href="{{ route('kontak.index') }}" class="{{ Request::routeIs('kontak.index') ? 'active' : '' }}">Kontak</a></li>
-        </ul>
-        <a href="{{ route('role-selection') }}" class="btn-masuk-nav">Masuk</a>
+
+        @guest
+            <ul class="nav-menu">
+                <li><a href="{{ route('landing') }}" class="{{ Request::routeIs('landing') ? 'active' : '' }}">Beranda</a></li>
+                <li><a href="{{ route('tentang') }}" class="{{ Request::routeIs('tentang') ? 'active' : '' }}">Tentang</a></li>
+                <li><a href="{{ route('prestasi') }}" class="{{ Request::routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
+                <li><a href="{{ route('kontak.index') }}" class="{{ Request::routeIs('kontak.index') ? 'active' : '' }}">Kontak</a></li>
+            </ul>
+            <a href="{{ route('role-selection') }}" class="btn-masuk-nav">Masuk</a>
+        @else
+            <div class="nav-menu">
+                <a href="{{ route('profile.edit') }}" class="user-btn">{{ Auth::user()->name ?? 'Profil' }} <i class="fas fa-chevron-down" style="font-size:13px;"></i></a>
+            </div>
+        @endguest
     </nav>
 
     <main>
-        @yield('content')
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                @isset($header)
+                    <div class="mb-6">
+                        {{ $header }}
+                    </div>
+                @endisset
+
+                @isset($slot)
+                    {!! $slot !!}
+                @else
+                    @yield('content')
+                @endisset
+            </div>
+        </div>
     </main>
 
-    @yield('scripts')
+    @isset($scripts)
+        {{ $scripts }}
+    @endisset
 </body>
 </html>

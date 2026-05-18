@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -26,15 +27,39 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $data = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('foto')) {
+            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                Storage::disk('public')->delete($user->foto);
+            }
+
+            $data['foto'] = $request->file('foto')->store('profile-photos', 'public');
         }
 
-        $request->user()->save();
+        $user->fill($data);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function downloadPhoto(Request $request)
+    {
+        $user = $request->user();
+
+        if (! $user->foto || ! Storage::disk('public')->exists($user->foto)) {
+            return Redirect::route('profile.edit')->with('status', 'photo-missing');
+        }
+
+        $fileName = 'foto-profil-' . $user->id . '.' . pathinfo($user->foto, PATHINFO_EXTENSION);
+
+        return Storage::disk('public')->download($user->foto, $fileName);
     }
 
     /**

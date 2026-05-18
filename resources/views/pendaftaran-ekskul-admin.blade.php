@@ -354,6 +354,14 @@
             display: block;
         }
 
+        .avatar-circle img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
         .sidebar-logo {
             width: 100%;
             max-width: 100px;
@@ -804,9 +812,13 @@
 
         <!-- Header -->
         <div class="header-card">
-            <div class="header-avatar">
-                <i class="fas fa-user"></i>
-            </div>
+            <div class="avatar-circle">
+                        @if(Auth::user() && Auth::user()->foto_url)
+                            <img src="{{ Auth::user()->foto_url }}" alt="{{ Auth::user()->name }}">
+                        @else
+                            <i class="fas fa-user"></i>
+                        @endif
+                    </div>
             <div class="header-info">
                 <h2>Halo {{ $user->name }}! <span class="role-badge">{{ ucfirst($user->role) }}</span></h2>
                 <div class="header-date">
@@ -905,7 +917,7 @@
                                             <div class="user-cell">
                                                 <div class="user-avatar">
                                                     @if ($pd->user->foto)
-                                                        <img src="{{ Storage::url($pd->user->foto) }}" alt="Foto">
+                                                        <img src="{{ $pd->user->foto_url }}" alt="Foto">
                                                     @else
                                                         <i class="fas fa-user" style="color:#fff; font-size: 18px;"></i>
                                                     @endif
