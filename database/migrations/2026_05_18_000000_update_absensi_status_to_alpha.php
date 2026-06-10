@@ -12,9 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $connection = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->getName();
+        $driver = DB::connection()->getDriverName();
 
-        if ($connection === 'mysql' || $connection === 'pgsql') {
+        if ($driver === 'mysql' || $driver === 'mariadb') {
             DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'sakit', 'alpha') NOT NULL");
         }
 
@@ -26,11 +26,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        $connection = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->getName();
+        $driver = DB::connection()->getDriverName();
 
         DB::table('absensi')->where('status', 'alpha')->update(['status' => 'alfa']);
 
-        if ($connection === 'mysql' || $connection === 'pgsql') {
+        if ($driver === 'mysql' || $driver === 'mariadb') {
             DB::statement("ALTER TABLE absensi MODIFY COLUMN status ENUM('hadir', 'izin', 'sakit', 'alfa') NOT NULL");
         }
     }

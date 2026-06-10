@@ -431,7 +431,7 @@
                         @if ($ekstrakurikuler->foto)
                             <div class="current-foto">
                                 <p>📷 Foto Saat Ini:</p>
-                                <img src="{{ asset('assets/ekskul/' . $ekstrakurikuler->foto) }}" alt="{{ $ekstrakurikuler->nama }}">
+                                <img src="{{ $ekstrakurikuler->foto_url }}" alt="{{ $ekstrakurikuler->nama }}">
                             </div>
                         @endif
                         <div class="file-input-wrapper" style="margin-top: 15px;">

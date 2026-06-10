@@ -446,7 +446,7 @@
                                     <tr>
                                         <td>
                                             @if ($ekskul->foto)
-                                                <img src="{{ asset('assets/ekskul/' . $ekskul->foto) }}" alt="{{ $ekskul->nama }}" class="foto-thumb">
+                                                <img src="{{ $ekskul->foto_url }}" alt="{{ $ekskul->nama }}" class="foto-thumb">
                                             @else
                                                 <div class="foto-thumb" style="background: #ccc; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">
                                                     <i class="fas fa-image"></i>

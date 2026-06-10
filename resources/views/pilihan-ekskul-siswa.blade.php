@@ -340,7 +340,7 @@
                             
                             // Prioritaskan foto dari database jika ada
                             if ($ekskul->foto) {
-                                $finalImg = asset('assets/ekskul/' . $ekskul->foto);
+                                $finalImg = $ekskul->foto_url;
                             } else {
                                 $finalImg = $imgMap[$keyword] ?? $imgUrl;
                             }
