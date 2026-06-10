@@ -29,7 +29,7 @@ class UserApprovalController extends Controller
                              ->orderBy('created_at', 'desc')
                              ->paginate(15);
 
-        return view('admin.user-approval', compact('pendingUsers', 'approvedUsers', 'rejectedUsers'));
+        return view('Admin.user-approval', compact('pendingUsers', 'approvedUsers', 'rejectedUsers'));
     }
 
     /**
@@ -92,6 +92,6 @@ class UserApprovalController extends Controller
             abort(403);
         }
 
-        return view('admin.user-detail', compact('user'));
+        return view('Admin.user-detail', compact('user'));
     }
 }
