@@ -81,6 +81,7 @@ use App\Http\Controllers\AnggotaController;
 Route::get('/anggota-ekskul', [AnggotaController::class, 'indexAdmin'])->middleware(['auth', 'verified'])->name('anggota-admin');
 Route::put('/anggota-ekskul/{id}/status', [AnggotaController::class, 'updateStatus'])->middleware(['auth', 'verified'])->name('anggota.status');
 Route::delete('/anggota-ekskul/{id}', [AnggotaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('anggota.destroy');
+Route::get('/anggota-ekskul/{id}', fn () => redirect()->route('anggota-admin'))->middleware(['auth', 'verified'])->name('anggota.show');
 
 // JADWAL EKSKUL
 use App\Http\Controllers\JadwalController;

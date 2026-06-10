@@ -809,43 +809,36 @@
                         </thead>
                         <tbody>
                             @foreach($anggota as $member)
+                                @php
+                                    $student = $member->user;
+                                    $studentName = $student->name ?? '-';
+                                    $studentPhoto = $student->foto_url ?? asset('assets/siswa.png');
+                                @endphp
                                 <tr>
                                     <td>{{ ($anggota->currentPage() - 1) * $anggota->perPage() + $loop->iteration }}</td>
                                     <td>
                                         <div class="student-card">
                                             <div class="student-avatar">
-                                                <button type="button" onclick="openImageModal({{ json_encode($isAdmin ? ($member->foto_url ?? asset('assets/siswa.png')) : ($member->user->foto_url ?? asset('assets/siswa.png'))) }}, {{ json_encode($isAdmin ? $member->name : $member->user->name) }})">
-                                                    <img src="{{ $isAdmin ? ($member->foto_url ?? asset('assets/siswa.png')) : ($member->user->foto_url ?? asset('assets/siswa.png')) }}"
-                                                        alt="Foto Profil {{ $isAdmin ? $member->name : $member->user->name }}">
+                                                <button type="button" onclick="openImageModal({{ json_encode($studentPhoto) }}, {{ json_encode($studentName) }})">
+                                                    <img src="{{ $studentPhoto }}"
+                                                        alt="Foto Profil {{ $studentName }}">
                                                 </button>
                                             </div>
                                             <div class="student-meta">
                                                 <div class="student-name">
-                                                    @if($isAdmin)
-                                                        {{ $member->name }}
-                                                    @else
-                                                        {{ $member->user->name }}
-                                                    @endif
+                                                    {{ $studentName }}
                                                 </div>
                                                 <div class="student-nisn">
-                                                    NISN: {{ $isAdmin ? ($member->nisn ?? '-') : ($member->user->nisn ?? '-') }}
+                                                    NISN: {{ $student->nisn ?? '-' }}
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        @if($isAdmin)
-                                            {{ $member->kelas ?? '-' }}
-                                        @else
-                                            {{ $member->user->kelas ?? '-' }}
-                                        @endif
+                                        {{ $student->kelas ?? '-' }}
                                     </td>
                                     <td>
-                                        @if($isAdmin)
-                                            {{ $member->email }}
-                                        @else
-                                            {{ $member->user->email }}
-                                        @endif
+                                        {{ $student->email ?? '-' }}
                                     </td>
                                     @if(!$isAdmin && $ekskuls->count() > 1)
                                         <td>{{ $member->ekskul->nama ?? '-' }}</td>
@@ -860,11 +853,11 @@
                                     <td>
                                         <div class="action-buttons">
                                             <button class="btn-tiny btn-edit"
-                                                onclick="openEditModal({{ $isAdmin ? $member->id : $member->id }}, '{{ $isAdmin ? 'aktif' : $member->status }}')">
+                                                onclick="openEditModal({{ $member->id }}, '{{ $member->status }}')">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
                                             <button class="btn-tiny btn-hapus"
-                                                onclick="openDeleteModal({{ $isAdmin ? $member->id : $member->id }})">
+                                                onclick="openDeleteModal({{ $member->id }})">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
                                         </div>

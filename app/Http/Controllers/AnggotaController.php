@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\AnggotaEkskul;
 use App\Models\Ekstrakurikuler;
 use App\Models\Pendaftaran;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
@@ -25,11 +24,10 @@ class AnggotaController extends Controller
                 ->paginate(10);
             $ekskulName = $ekskuls->count() === 1 ? $ekskuls->first()->nama : null;
         } else {
-            // Admin melihat SEMUA siswa yang telah disetujui (status = approved)
-            $semuaSiswa = User::where('role', 'siswa')
-                              ->where('status', 'approved')
-                              ->paginate(10);
-            $anggota = $semuaSiswa;
+            // Admin melihat semua data anggota ekskul, supaya ID edit/hapus cocok dengan route anggota.
+            $anggota = AnggotaEkskul::with('user', 'ekskul')
+                ->latest('id')
+                ->paginate(10);
             $ekskuls = Ekstrakurikuler::all();
             $ekskulName = null;
         }
