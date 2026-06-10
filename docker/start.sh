@@ -63,6 +63,11 @@ if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
 
     mkdir -p "${SQLITE_DIR}"
 
+    if [ "${REFRESH_SQLITE_FROM_REPO:-false}" = "true" ] && [ -f database/database.sqlite ]; then
+        echo "Refreshing SQLite database from repository to ${SQLITE_PATH}"
+        cp database/database.sqlite "${SQLITE_PATH}"
+    fi
+
     if [ ! -f "${SQLITE_PATH}" ] && [ -f database/database.sqlite ]; then
         echo "Copying initial SQLite database to ${SQLITE_PATH}"
         cp database/database.sqlite "${SQLITE_PATH}"
