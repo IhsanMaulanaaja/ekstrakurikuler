@@ -60,7 +60,7 @@ fi
 if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     SQLITE_PATH="${DB_DATABASE:-database/database.sqlite}"
     SQLITE_DIR="$(dirname "${SQLITE_PATH}")"
-    SQLITE_REFRESH_VERSION="${SQLITE_REFRESH_VERSION:-database-2026-06-10-2}"
+    SQLITE_REFRESH_VERSION="${SQLITE_REFRESH_VERSION:-database-2026-06-10-3}"
     SQLITE_REFRESH_MARKER="${SQLITE_DIR}/.sqlite-refresh-version"
 
     mkdir -p "${SQLITE_DIR}"

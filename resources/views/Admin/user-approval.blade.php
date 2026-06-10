@@ -263,7 +263,7 @@
                                     }
                                 @endphp
                                 <td>{{ $displayKelas ?: '-' }}</td>
-                                <td>{{ $user->created_at->translatedFormat('d M Y H:i') }}</td>
+                                <td>{{ $user->created_at ? $user->created_at->format('d M Y H:i') : '-' }}</td>
 
                                 <td>
                                     <div class="btn-list">
@@ -374,7 +374,7 @@
                                     }
                                 @endphp
                                 <td>{{ $displayKelas ?: '-' }}</td>
-                                <td>{{ $user->updated_at->translatedFormat('d M Y') }}</td>
+                                <td>{{ $user->updated_at ? $user->updated_at->format('d M Y') : '-' }}</td>
 
                                <td>
                                     <a href="{{ route('user-approval.show', $user->id) }}" class="btn-primary">
@@ -447,7 +447,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->kelas ?? '-' }}</td>
-                                <td>{{ $user->updated_at->translatedFormat('d M Y') }}</td>
+                                <td>{{ $user->updated_at ? $user->updated_at->format('d M Y') : '-' }}</td>
 
                                 <td style="text-align:center;">
                                     <form action="{{ route('user-approval.delete', $user->id) }}" method="POST">

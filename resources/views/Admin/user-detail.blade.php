@@ -51,11 +51,11 @@
                     </div>
                     <div>
                         <h3 style="font-size:13px; font-weight:700; color:#6b7280; text-transform:uppercase; margin-bottom:8px;">Terdaftar Sejak</h3>
-                        <p style="font-size:18px; color:#111827;">{{ $user->created_at->format('d M Y H:i') }}</p>
+                        <p style="font-size:18px; color:#111827;">{{ $user->created_at ? $user->created_at->format('d M Y H:i') : '-' }}</p>
                     </div>
                     <div>
                         <h3 style="font-size:13px; font-weight:700; color:#6b7280; text-transform:uppercase; margin-bottom:8px;">Update Terakhir</h3>
-                        <p style="font-size:18px; color:#111827;">{{ $user->updated_at->format('d M Y H:i') }}</p>
+                        <p style="font-size:18px; color:#111827;">{{ $user->updated_at ? $user->updated_at->format('d M Y H:i') : '-' }}</p>
                     </div>
                 </div>
             </div>
