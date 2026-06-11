@@ -53,13 +53,11 @@ class AttendanceService
                 continue;
             }
 
-            $missingStatus = DB::getDriverName() === 'sqlite' ? 'alfa' : 'alpha';
-
             Absensi::create([
                 'user_id' => $user->id,
                 'ekskul_id' => $ekskulId,
                 'tanggal' => $yesterdayDate,
-                'status' => $missingStatus,
+                'status' => 'alpha',
                 'keterangan' => 'Tidak hadir pada jadwal latihan kemarin.',
             ]);
         }
